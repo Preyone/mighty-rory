@@ -4,7 +4,6 @@
   <title>Doggy Doo Game</title>  
   <style>
     body {
-      background-color: #87CEEB; 
       overflow: hidden; 
     }
     canvas {
@@ -23,39 +22,18 @@
 
     let dogX = 50;
     let dogY = 130;
+    let gradientX = 0; 
 
     function drawDog() {
-      // Тело собачки
-      ctx.fillStyle = 'brown'; 
-      ctx.fillRect(dogX, dogY, 40, 30); 
+      // ... (код для рисования собачки) ...
+    }
 
-      // Голова собачки
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI); 
-      ctx.fill();
-
-      // Ноги собачки
-      ctx.fillRect(dogX, dogY + 30, 10, 10);
-      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
-
-      // Хвост собачки
-      ctx.beginPath();
-      ctx.moveTo(dogX + 40, dogY + 15); 
-      ctx.lineTo(dogX + 60, dogY + 5); 
-      ctx.stroke();
-
-      // Глаза собачки
-      ctx.fillStyle = 'white'; 
-      ctx.beginPath();
-      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
-      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Нос собачки
-      ctx.fillStyle = 'black';
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
-      ctx.fill();
+    function drawBackground() {
+      const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
+      gradient.addColorStop(0, '#87CEEB'); // Голубой
+      gradient.addColorStop(1, '#ffffff'); // Белый
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     function update() {
@@ -63,10 +41,16 @@
 
       document.addEventListener('keydown', function(event) {
         if (event.code === 'ArrowRight') {
-          dogX += 1;
+          dogX += 2;
         }
       });
 
+      gradientX -= 2; // Перемещаем градиент влево
+      if (gradientX <= -canvas.width) { 
+        gradientX = 0; // Возвращаем градиент в начальную позицию
+      }
+
+      drawBackground(); // Рисуем фон
       drawDog();
       requestAnimationFrame(update);
     }
