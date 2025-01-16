@@ -107,8 +107,8 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-      if (dogY > 160) {  // Изменено на 160
-          dogY = 130;
+        if (dogY > 160) {  // Проверка, провалилась ли собачка под землю
+          dogY = 130;    // Если провалилась, ставим на землю
           isJumping = false;
           dogVerticalSpeed = 0;
         }
@@ -125,7 +125,6 @@
     }
 
     update();
-
   </script>
 
 </body>
