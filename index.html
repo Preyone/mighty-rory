@@ -152,7 +152,11 @@
           isJumping = false;
           dogVerticalSpeed = 0;
         }
-
+        
+        if (dogX < 0) {  
+          dogX = 0;
+          
+        }
         drawJumpingDog(); // Рисуем прыгающую собачку
 
       } else {
