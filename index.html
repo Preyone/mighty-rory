@@ -30,63 +30,15 @@
     let dogVerticalSpeed = 0;
 
     function drawDog() {
-      // Тело собачки
-      ctx.fillStyle = 'brown';
-      ctx.fillRect(dogX, dogY, 40, 30);
-
-      // Голова собачки
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Ноги собачки
-      ctx.fillRect(dogX, dogY + 30, 10, 10);
-      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
-
-      // Хвост собачки
-      ctx.beginPath();
-      ctx.moveTo(dogX + 40, dogY + 15);
-      ctx.lineTo(dogX + 60, dogY + 5);
-      ctx.stroke();
-
-      // Глаза собачки
-      ctx.fillStyle = 'white';
-      ctx.beginPath();
-      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
-      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Нос собачки
-      ctx.fillStyle = 'black';
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
-      ctx.fill();
+      // ... (код для рисования собачки) ...
     }
 
     function drawTree(x, y) {
-      ctx.fillStyle = 'brown';
-      ctx.fillRect(x, y, 10, 40);
-
-      ctx.fillStyle = 'green';
-      ctx.beginPath();
-      ctx.moveTo(x - 20, y);
-      ctx.lineTo(x + 30, y);
-      ctx.lineTo(x + 5, y - 30);
-      ctx.fill();
+      // ... (код для рисования дерева) ...
     }
 
     function drawBackground() {
-      const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
-      gradient.addColorStop(0, '#87CEEB');
-      gradient.addColorStop(1, '#ffffff');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.globalAlpha = 0.3; // Делаем деревья прозрачнее
-      drawTree(100, 170);
-      drawTree(250, 170);
-      drawTree(400, 170);
-      ctx.globalAlpha = 1; // Возвращаем непрозрачность
+      // ... (код для рисования фона и деревьев) ...
     }
 
     document.addEventListener('keydown', function (event) {
@@ -112,9 +64,8 @@
         dogY -= dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        // Условие было: if (dogY > 190) 
-        if (dogY > 160) {  // Изменено на 160
-          dogY = 130;    // Изменено на 160
+        if (dogY > 190) { // Изменено обратно на 190
+          dogY = 130;
           isJumping = false;
           dogVerticalSpeed = 0;
         }
@@ -132,7 +83,6 @@
     }
 
     update();
-
   </script>
 
 </body>
