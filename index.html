@@ -70,10 +70,13 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       document.addEventListener('keydown', function(event) {
-        if (event.code === 'ArrowRight') {
-          dogX += 2;
-        }
-      });
+  if (event.code === 'ArrowRight') {
+    dogX += 2;
+    if (dogX + 40 > canvas.width) { // Проверяем, не выходит ли собачка за правую границу холста
+      dogX = canvas.width - 40;     // Если выходит, "прижимаем" ее к правому краю
+    }
+  }
+});
 
       gradientX -= 2; // Перемещаем градиент влево
       if (gradientX <= -canvas.width) { 
