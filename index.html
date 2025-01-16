@@ -22,7 +22,44 @@
     const ctx = canvas.getContext('2d');
 
     // Здесь будет код для рисования собачки, какашек и игровой логики
+function drawDog() {
+  // Тело собачки
+  ctx.fillStyle = 'brown'; // Коричневый цвет
+  ctx.fillRect(50, 130, 40, 30); // x, y, ширина, высота
 
+  // Голова собачки
+  ctx.beginPath();
+  ctx.arc(80, 120, 15, 0, 2 * Math.PI); // x, y, радиус, начальный угол, конечный угол
+  ctx.fill();
+
+  // Ноги собачки
+  ctx.fillRect(50, 160, 10, 10);
+  ctx.fillRect(80, 160, 10, 10);
+
+  // Хвост собачки
+  ctx.beginPath();
+  ctx.moveTo(90, 145); // Начальная точка
+  ctx.lineTo(110, 135); // Конечная точка
+  ctx.stroke();
+
+  // Глаза собачки
+  ctx.fillStyle = 'white'; // Белый цвет
+  ctx.beginPath();
+  ctx.arc(75, 115, 3, 0, 2 * Math.PI);
+  ctx.arc(85, 115, 3, 0, 2 * Math.PI);
+  ctx.fill();
+
+  // Нос собачки
+  ctx.fillStyle = 'black'; // Черный цвет
+  ctx.beginPath();
+  ctx.arc(80, 125, 3, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+// Вызываем функцию, чтобы нарисовать собачку
+drawDog();
+
+    
   </script>
 
 </body>
