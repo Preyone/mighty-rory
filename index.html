@@ -109,10 +109,10 @@
       }
 
       if (isJumping) {
-        dogY -= dogVerticalSpeed;
+        dogY += dogVerticalSpeed; // <-- Исправлено: добавляем dogVerticalSpeed
 
         if (dogVerticalSpeed < 0) {
-          dogVerticalSpeed += 0.5; // Изменено с 1 на 0.5
+          dogVerticalSpeed += 0.5; 
         } else {
           dogVerticalSpeed += 2;
         }
