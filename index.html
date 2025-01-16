@@ -89,9 +89,8 @@
       ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
-    // Обработчик события keydown вынесен за пределы update()
-    document.addEventListener('keydown', function(event) { 
-      if (event.code === 'Space' && !isJumping) { 
+    document.addEventListener('keydown', function (event) {
+      if (event.code === 'Space' && !isJumping) {
         isJumping = true;
         dogVerticalSpeed = -10;
       }
@@ -108,7 +107,8 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 160) { 
+        // Условие было: if (dogY > 160)
+        if (dogY > 130) { // Изменено на 130
           dogY = 130;
           isJumping = false;
           dogVerticalSpeed = 0;
