@@ -92,7 +92,7 @@
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
-        dogVerticalSpeed = -10; // Уменьшаем начальную скорость прыжка
+        dogVerticalSpeed = -10;
         event.preventDefault();
       }
     });
@@ -106,19 +106,16 @@
 
       if (dogX < 0) {
         dogX = 0;
-      } 
-      
-      if (isJumping) {
+      }
+
+      if (isJumping) { // <-- Этот блок должен быть один раз
         dogY += dogVerticalSpeed;
         dogX += dogVerticalSpeed * 0.5;
-        
-      if (isJumping) {
-        dogY += dogVerticalSpeed; 
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5; 
         } else {
-          dogVerticalSpeed += 1; // Уменьшаем ускорение свободного падения
+          dogVerticalSpeed += 1; 
         }
 
         if (dogY > 190) {
