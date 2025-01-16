@@ -30,13 +30,6 @@
     let dogVerticalSpeed = 0;
 
     function drawDog() {
-
-      if (isJumping && dogVerticalSpeed < 0) { // Отражаем только во время прыжка вверх
-        ctx.save(); // Сохраняем текущее состояние холста
-        ctx.scale(-1, 1); // Отражаем по горизонтали
-        dogX = -dogX - 60; // Корректируем позицию собачки после отражения
-      }
-
       // Тело собачки
       ctx.fillStyle = 'brown';
       ctx.fillRect(dogX, dogY, 40, 30);
@@ -68,11 +61,6 @@
       ctx.beginPath();
       ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
       ctx.fill();
-
-      if (isJumping && dogVerticalSpeed < 0) {
-        ctx.restore(); // Восстанавливаем состояние холста
-        dogX = -dogX - 60; // Корректируем позицию собачки обратно
-      }
     }
 
     function drawTree(x, y) {
@@ -114,6 +102,8 @@
 
       console.log(dogY, isJumping);
 
+      // dogX -= 2;  <-- Удалено движение влево
+
       if (dogX < 0) {
         dogX = 0;
       }
@@ -122,7 +112,7 @@
         dogY += dogVerticalSpeed;
 
         if (dogVerticalSpeed < 0) { 
-          dogX += dogVerticalSpeed * 0.5;
+          dogX += dogVerticalSpeed * 0.5; // Собачка прыгает вправо
         }
 
         if (dogVerticalSpeed < 0) {
@@ -135,6 +125,7 @@
           dogY = 160;
           isJumping = false;
           dogVerticalSpeed = 0;
+          // dogX = 50;  <-- Удалено или закомментировано
         }
       }
 
