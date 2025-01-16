@@ -108,9 +108,9 @@
         dogX = 0;
       }
 
-      if (isJumping) { // <-- Этот блок должен быть один раз
+      if (isJumping) {
         dogY += dogVerticalSpeed;
-        dogX += dogVerticalSpeed * 0.5;
+        dogX -= dogVerticalSpeed * 0.5; // <-- Изменено здесь
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5; 
