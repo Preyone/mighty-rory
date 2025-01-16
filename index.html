@@ -17,7 +17,7 @@
 
 <body>
 
-  <canvas id="gameCanvas" width="600" height="200"></canvas>
+  <canvas id="gameCanvas" width="800" height="200"></canvas>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
@@ -82,15 +82,15 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawTree(100, 160);
-      drawTree(250, 160);
-      drawTree(400, 160);
+      ctx.globalAlpha = 0.7; // Делаем деревья прозрачнее
+      drawTree(100, 170); // Изменено значение y
+      drawTree(250, 170); // Изменено значение y
+      drawTree(400, 170); // Изменено значение y
+      ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // dogX -= 2; <--- ЭТУ СТРОКУ УДАЛИТЬ!!!
 
       if (dogX < 0) {
         dogX = 0;
@@ -125,6 +125,7 @@
     }
 
     update();
+
   </script>
 
 </body>
