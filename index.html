@@ -110,7 +110,7 @@
 
       if (isJumping) {
         dogY += dogVerticalSpeed;
-        dogX -= dogVerticalSpeed * 0.5; // Собачка прыгает вправо
+        dogX += dogVerticalSpeed * 0.5; // <-- Изменено здесь
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5;
@@ -122,7 +122,7 @@
           dogY = 160;
           isJumping = false;
           dogVerticalSpeed = 0;
-          // dogX = 50;  <-- Удалено, чтобы собачка приземлялась в новой точке
+          // dogX = 50;  <-- Удалено или закомментировано
         }
       }
 
