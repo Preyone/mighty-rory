@@ -102,14 +102,16 @@
 
       console.log(dogY, isJumping);
 
-      if (dogX < 0) {
-        dogX = 0;
-      }
+      // dogX -= 2;  <-- Удалено движение влево
+
+      // if (dogX < 0) {  <-- Удалено
+      //   dogX = 0;
+      // }
 
       if (isJumping) {
         dogY += dogVerticalSpeed;
 
-        dogX -= dogVerticalSpeed * 0.5; // <-- Добавлено обратно
+        dogX += dogVerticalSpeed * 0.5; // Собачка прыгает вправо
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5;
