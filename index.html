@@ -82,7 +82,7 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.globalAlpha = 0.3; // Делаем деревья еще прозрачнее
+      ctx.globalAlpha = 0.3; // Делаем деревья прозрачнее
       drawTree(100, 170);
       drawTree(250, 170);
       drawTree(400, 170);
@@ -107,7 +107,6 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        // Проверка приземления
         if (dogY > 160) { // Изменено значение y
           dogY = 160;    // Изменено значение y
           isJumping = false;
