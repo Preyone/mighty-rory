@@ -24,7 +24,7 @@
     const ctx = canvas.getContext('2d');
 
     let dogX = 50;
-    let dogY = 130;
+    let dogY = 160; // Изменено значение y
     let gradientX = 0;
     let isJumping = false;
     let dogVerticalSpeed = 0;
@@ -82,16 +82,15 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.globalAlpha = 0.7; // Делаем деревья прозрачнее
-      drawTree(100, 170); // Изменено значение y
-      drawTree(250, 170); // Изменено значение y
-      drawTree(400, 170); // Изменено значение y
+      ctx.globalAlpha = 0.3; // Делаем деревья еще прозрачнее
+      drawTree(100, 170);
+      drawTree(250, 170);
+      drawTree(400, 170);
       ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 
       if (dogX < 0) {
         dogX = 0;
@@ -108,8 +107,9 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 130) {
-          dogY = 130;
+        // Проверка приземления
+        if (dogY > 160) { // Изменено значение y
+          dogY = 160;    // Изменено значение y
           isJumping = false;
           dogVerticalSpeed = 0;
         }
