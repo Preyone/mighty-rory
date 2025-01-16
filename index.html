@@ -24,7 +24,7 @@
     const ctx = canvas.getContext('2d');
 
     let dogX = 50;
-    let dogY = 160; // Изменено значение y
+    let dogY = 160; // Начальное значение y остается 160
     let gradientX = 0;
     let isJumping = false;
     let dogVerticalSpeed = 0;
@@ -107,8 +107,8 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 130) { // Стало 130 (160 - 30 (высота ножек))
-        dogY = 130;    // Стало 130 (160 - 30 (высота ножек))
+        if (dogY > 160) { // Проверка приземления
+          dogY = 130;    // Собачка приземляется на землю
           isJumping = false;
           dogVerticalSpeed = 0;
         }
