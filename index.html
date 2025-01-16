@@ -110,7 +110,9 @@
 
       if (isJumping) {
         dogY += dogVerticalSpeed;
-        dogX += dogVerticalSpeed * 0.5; // <-- Изменено здесь
+
+        // Было: dogX -= dogVerticalSpeed * 0.5;
+        dogX += dogVerticalSpeed * 0.5; // <-- Исправлено: собачка прыгает вправо
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5;
