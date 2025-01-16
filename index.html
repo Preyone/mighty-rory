@@ -112,7 +112,7 @@
         dogY += dogVerticalSpeed;
 
         // Было: dogX -= dogVerticalSpeed * 0.5;
-        dogX += dogVerticalSpeed * 0.5; // <-- Исправлено: собачка прыгает вправо
+        dogX -= dogVerticalSpeed * 0.5; // <-- Исправлено: собачка прыгает вправо
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5;
