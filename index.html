@@ -89,12 +89,13 @@
       ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
-    document.addEventListener('keydown', function (event) {
-      if (event.code === 'Space' && !isJumping) {
-        isJumping = true;
-        dogVerticalSpeed = -10;
-      }
-    });
+    document.addEventListener('keydown', function(event) {
+  if (event.code === 'Space' && !isJumping) { 
+    isJumping = true;
+    dogVerticalSpeed = -10;
+    event.preventDefault();  // <-- Добавлено здесь
+  }
+});
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
