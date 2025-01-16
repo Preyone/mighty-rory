@@ -30,11 +30,45 @@
     let dogVerticalSpeed = 0;
 
     function drawDog() {
-      // ... (код для рисования собачки) ...
+      // Тело собачки
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(dogX, dogY, 40, 30);
+
+      // Голова собачки
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Ноги собачки
+      ctx.fillRect(dogX, dogY + 30, 10, 10);
+      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
+
+      // Хвост собачки
+      ctx.beginPath();
+      ctx.moveTo(dogX + 40, dogY + 15);
+      ctx.lineTo(dogX + 60, dogY + 5);
+      ctx.stroke();
+
+      // Глаза собачки
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Нос собачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
+      ctx.fill();
     }
 
     function drawBackground() {
-      // ... (код для рисования фона) ...
+      const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
+      gradient.addColorStop(0, '#87CEEB'); // Голубой
+      gradient.addColorStop(1, '#ffffff'); // Белый
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     function update() {
@@ -42,6 +76,7 @@
 
       dogX -= 2; // Автоматическое движение собачки влево
 
+      // Проверка, чтобы собачка не уходила за левый край
       if (dogX < 0) {
         dogX = 0;
       }
@@ -70,7 +105,7 @@
       }
 
       drawBackground(); // Рисуем фон
-      drawDog(); // !!! Добавлено здесь !!!
+      drawDog();       // Рисуем собачку
       requestAnimationFrame(update);
     }
 
