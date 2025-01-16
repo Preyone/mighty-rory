@@ -63,17 +63,35 @@
       ctx.fill();
     }
 
+    function drawTree(x, y) {
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(x, y, 10, 40);
+
+      ctx.fillStyle = 'green';
+      ctx.beginPath();
+      ctx.moveTo(x - 20, y);
+      ctx.lineTo(x + 30, y);
+      ctx.lineTo(x + 5, y - 30);
+      ctx.fill();
+    }
+
     function drawBackground() {
       const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
-      gradient.addColorStop(0, '#87CEEB'); // Голубой
-      gradient.addColorStop(1, '#ffffff'); // Белый
+      gradient.addColorStop(0, '#87CEEB');
+      gradient.addColorStop(1, '#ffffff');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawTree(100, 160);
+      drawTree(250, 160);
+      drawTree(400, 160);
+      // ... можно добавить еще деревьев ...
     }
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // dogX -= 2; <--- ЭТУ СТРОКУ УДАЛИТЬ!!!
 
       if (dogX < 0) {
         dogX = 0;
@@ -97,7 +115,7 @@
         }
       }
 
-      gradientX -= 4; // Перемещаем градиент влево
+      gradientX -= 2; // Перемещаем градиент влево
       if (gradientX <= -canvas.width) {
         gradientX = 0; // Возвращаем градиент в начальную позицию
       }
