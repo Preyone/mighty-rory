@@ -26,6 +26,8 @@
     let dogX = 50;
     let dogY = 130;
     let gradientX = 0;
+    let isJumping = false;
+    let dogVerticalSpeed = 0;
 
     function drawDog() {
       // Тело собачки
@@ -72,16 +74,29 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      dogX -= 2; // Автоматическое движение собачки влево
+
+      if (dogX < 0) {
+        dogX = 0;
+      }
+
       document.addEventListener('keydown', function (event) {
-        if (event.code === 'ArrowRight') {
-          dogX += 2;
-          if (dogX + 60 > canvas.width) {
-            dogX = canvas.width - 60;
-          }
+        if (event.code === 'Space' && !isJumping) {
+          isJumping = true;
+          dogVerticalSpeed = -10;
         }
       });
 
-      dogX -= 2; // Перемещаем собачку влево вместе с фоном
+      if (isJumping) {
+        dogY += dogVerticalSpeed;
+        dogVerticalSpeed += 1;
+
+        if (dogY > 130) {
+          dogY = 130;
+          isJumping = false;
+          dogVerticalSpeed = 0;
+        }
+      }
 
       gradientX -= 2; // Перемещаем градиент влево
       if (gradientX <= -canvas.width) {
