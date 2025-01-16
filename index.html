@@ -92,27 +92,27 @@
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
-        dogVerticalSpeed = -15;
+        dogVerticalSpeed = -20; // Увеличена начальная скорость прыжка
         event.preventDefault();
       }
     });
-
-    // Удален обработчик события keyup
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       console.log(dogY, isJumping);
 
+      // dogX -= 2;  <-- Удалено движение влево
+
       if (dogX < 0) {
         dogX = 0;
       }
 
       if (isJumping) {
-        dogY -= dogVerticalSpeed; 
+        dogY -= dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 160) {
+        if (dogY > 160) { // Изменено на 160
           dogY = 130;
           isJumping = false;
           dogVerticalSpeed = 0;
