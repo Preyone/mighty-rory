@@ -110,9 +110,15 @@
 
       if (isJumping) {
         dogY -= dogVerticalSpeed;
-        dogVerticalSpeed += 1;
 
-        if (dogY > 190) { // Изменено обратно на 190
+        // Изменено обновление dogVerticalSpeed
+        if (dogVerticalSpeed < 0) {
+          dogVerticalSpeed += 1; 
+        } else {
+          dogVerticalSpeed += 2; 
+        }
+
+        if (dogY > 190) {
           dogY = 160;
           isJumping = false;
           dogVerticalSpeed = 0;
