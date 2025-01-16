@@ -4,7 +4,7 @@
   <title>Doggy Doo Game</title>  
   <style>
     body {
-      background-color: #87CEEB; /* Голубой фон, как небо */
+      background-color: #87CEEB; 
       overflow: hidden; 
     }
     canvas {
@@ -21,45 +21,52 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Здесь будет код для рисования собачки, какашек и игровой логики
-function drawDog() {
-  // Тело собачки
-  ctx.fillStyle = 'brown'; // Коричневый цвет
-  ctx.fillRect(50, 130, 40, 30); // x, y, ширина, высота
+    let dogX = 50;
+    let dogY = 130;
 
-  // Голова собачки
-  ctx.beginPath();
-  ctx.arc(80, 120, 15, 0, 2 * Math.PI); // x, y, радиус, начальный угол, конечный угол
-  ctx.fill();
+    function drawDog() {
+      // Тело собачки
+      ctx.fillStyle = 'brown'; 
+      ctx.fillRect(dogX, dogY, 40, 30); 
 
-  // Ноги собачки
-  ctx.fillRect(50, 160, 10, 10);
-  ctx.fillRect(80, 160, 10, 10);
+      // Голова собачки
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI); 
+      ctx.fill();
 
-  // Хвост собачки
-  ctx.beginPath();
-  ctx.moveTo(90, 145); // Начальная точка
-  ctx.lineTo(110, 135); // Конечная точка
-  ctx.stroke();
+      // Ноги собачки
+      ctx.fillRect(dogX, dogY + 30, 10, 10);
+      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
 
-  // Глаза собачки
-  ctx.fillStyle = 'white'; // Белый цвет
-  ctx.beginPath();
-  ctx.arc(75, 115, 3, 0, 2 * Math.PI);
-  ctx.arc(85, 115, 3, 0, 2 * Math.PI);
-  ctx.fill();
+      // Хвост собачки
+      ctx.beginPath();
+      ctx.moveTo(dogX + 40, dogY + 15); 
+      ctx.lineTo(dogX + 60, dogY + 5); 
+      ctx.stroke();
 
-  // Нос собачки
-  ctx.fillStyle = 'black'; // Черный цвет
-  ctx.beginPath();
-  ctx.arc(80, 125, 3, 0, 2 * Math.PI);
-  ctx.fill();
-}
+      // Глаза собачки
+      ctx.fillStyle = 'white'; 
+      ctx.beginPath();
+      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.fill();
 
-// Вызываем функцию, чтобы нарисовать собачку
-drawDog();
+      // Нос собачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
+      ctx.fill();
+    }
 
-    
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      dogX += 2; 
+      drawDog(); 
+      requestAnimationFrame(update); 
+    }
+
+    update(); 
+
   </script>
 
 </body>
