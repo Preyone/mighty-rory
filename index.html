@@ -111,7 +111,9 @@
       if (isJumping) {
         dogY += dogVerticalSpeed;
 
-        dogX += dogVerticalSpeed * 0.5; // <-- Изменено здесь
+        if (dogVerticalSpeed < 0) { // <-- Добавлено условие
+          dogX += dogVerticalSpeed * 0.5;
+        }
 
         if (dogVerticalSpeed < 0) {
           dogVerticalSpeed += 0.5;
