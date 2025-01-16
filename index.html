@@ -106,8 +106,12 @@
 
       if (dogX < 0) {
         dogX = 0;
-      }
-
+      } 
+      
+      if (isJumping) {
+        dogY += dogVerticalSpeed;
+        dogX += dogVerticalSpeed * 0.5;
+        
       if (isJumping) {
         dogY += dogVerticalSpeed; 
 
