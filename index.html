@@ -107,8 +107,7 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        // Условие было: if (dogY > 160)
-        if (dogY > 130) { // Изменено на 130
+      if (dogY > 160) {  // Изменено на 160
           dogY = 130;
           isJumping = false;
           dogVerticalSpeed = 0;
