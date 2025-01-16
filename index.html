@@ -92,7 +92,7 @@
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
-        dogVerticalSpeed = -30;
+        dogVerticalSpeed = -20;
         event.preventDefault();
       }
     });
@@ -111,11 +111,10 @@
       if (isJumping) {
         dogY -= dogVerticalSpeed;
 
-        // Изменено обновление dogVerticalSpeed
         if (dogVerticalSpeed < 0) {
-          dogVerticalSpeed += 1; 
+          dogVerticalSpeed += 0.5; // Изменено с 1 на 0.5
         } else {
-          dogVerticalSpeed += 2; 
+          dogVerticalSpeed += 2;
         }
 
         if (dogY > 190) {
