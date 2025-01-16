@@ -30,21 +30,69 @@
     let dogVerticalSpeed = 0;
 
     function drawDog() {
-      // ... (код для рисования собачки) ...
+      // Тело собачки
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(dogX, dogY, 40, 30);
+
+      // Голова собачки
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Ноги собачки
+      ctx.fillRect(dogX, dogY + 30, 10, 10);
+      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
+
+      // Хвост собачки
+      ctx.beginPath();
+      ctx.moveTo(dogX + 40, dogY + 15);
+      ctx.lineTo(dogX + 60, dogY + 5);
+      ctx.stroke();
+
+      // Глаза собачки
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Нос собачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
+      ctx.fill();
     }
 
     function drawTree(x, y) {
-      // ... (код для рисования дерева) ...
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(x, y, 10, 40);
+
+      ctx.fillStyle = 'green';
+      ctx.beginPath();
+      ctx.moveTo(x - 20, y);
+      ctx.lineTo(x + 30, y);
+      ctx.lineTo(x + 5, y - 30);
+      ctx.fill();
     }
 
     function drawBackground() {
-      // ... (код для рисования фона и деревьев) ...
+      const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
+      gradient.addColorStop(0, '#87CEEB');
+      gradient.addColorStop(1, '#ffffff');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.globalAlpha = 0.3; // Делаем деревья прозрачнее
+      drawTree(100, 170);
+      drawTree(250, 170);
+      drawTree(400, 170);
+      ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
-        dogVerticalSpeed = -20; // Увеличена начальная скорость прыжка
+        dogVerticalSpeed = -20;
         event.preventDefault();
       }
     });
