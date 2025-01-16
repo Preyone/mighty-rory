@@ -89,13 +89,14 @@
       ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
-    document.addEventListener('keydown', function(event) {
-  if (event.code === 'Space' && !isJumping) { 
-    isJumping = true;
-    dogVerticalSpeed = -10;
-    event.preventDefault();  // <-- Добавлено здесь
-  }
-});
+    document.addEventListener('keydown', function (event) {
+      if (event.code === 'Space' && !isJumping) {
+        isJumping = true;
+        dogVerticalSpeed = -10;
+        // Добавлен event.preventDefault() для предотвращения двойного прыжка
+        event.preventDefault(); 
+      }
+    });
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -108,8 +109,8 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 160) {  // Проверка, провалилась ли собачка под землю
-          dogY = 130;    // Если провалилась, ставим на землю
+        if (dogY > 160) {
+          dogY = 130;
           isJumping = false;
           dogVerticalSpeed = 0;
         }
@@ -122,10 +123,12 @@
 
       drawBackground(); // Рисуем фон
       drawDog();       // Рисуем собачку
-      requestAnimationFrame(update);
+
+      requestAnimationFrame(update); // Вызов в конце функции
     }
 
     update();
+
   </script>
 
 </body>
