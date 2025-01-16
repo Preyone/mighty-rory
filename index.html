@@ -135,17 +135,10 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      console.log(dogY, isJumping);
-
-      // dogX -= 2;  <-- Удалено движение влево
-
-      // if (dogX < 0) {  <-- Удалено
-      //   dogX = 0;
-      // }
+      console.log("Dog position:", dogX, dogY); // Добавлено для отладки
 
       if (isJumping) {
         dogY += dogVerticalSpeed;
-
         dogX += dogVerticalSpeed * 0.5;
 
         if (dogVerticalSpeed < 0) {
@@ -158,7 +151,6 @@
           dogY = 160;
           isJumping = false;
           dogVerticalSpeed = 0;
-          // dogX = 50;  <-- Удалено или закомментировано
         }
 
         drawJumpingDog(); // Рисуем прыгающую собачку
