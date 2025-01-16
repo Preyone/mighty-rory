@@ -107,8 +107,8 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += 1;
 
-        if (dogY > 160) { // Изменено значение y
-          dogY = 160;    // Изменено значение y
+        if (dogY > 130) { // Стало 130 (160 - 30 (высота ножек))
+        dogY = 130;    // Стало 130 (160 - 30 (высота ножек))
           isJumping = false;
           dogVerticalSpeed = 0;
         }
