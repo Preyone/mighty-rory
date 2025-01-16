@@ -97,11 +97,7 @@
       }
     });
 
-    document.addEventListener('keyup', function (event) {
-      if (event.code === 'Space') {
-        isJumping = false;
-      }
-    });
+    // Удален обработчик события keyup
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -113,7 +109,7 @@
       }
 
       if (isJumping) {
-        dogY -= dogVerticalSpeed; // Исправлено: вычитаем dogVerticalSpeed
+        dogY -= dogVerticalSpeed; 
         dogVerticalSpeed += 1;
 
         if (dogY > 160) {
