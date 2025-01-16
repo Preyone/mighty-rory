@@ -72,8 +72,8 @@
       document.addEventListener('keydown', function(event) {
         if (event.code === 'ArrowRight') {
           dogX += 2;
-          if (dogX + 40 > canvas.width) {
-            dogX = canvas.width - 40; 
+          if (dogX + 60 > canvas.width) { // Изменено здесь
+            dogX = canvas.width - 60; // И здесь
           }
         }
       });
