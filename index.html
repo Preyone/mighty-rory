@@ -33,8 +33,11 @@
     const jumpStrength = -12; // Сила прыжка
     const passiveBackwardSpeed = 1; // Пассивная скорость назад
     const groundLevel = 160; // Уровень земли
+    let animationFrame = 0; // Счётчик для анимации собаки
 
     function drawDog() {
+      animationFrame++;
+
       // Тело собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
@@ -55,16 +58,18 @@
       ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Хвост собачки
+      // Хвост собачки (анимируем махание)
       ctx.beginPath();
+      const tailOffset = Math.sin(animationFrame * 0.2) * 5;
       ctx.moveTo(dogX, dogY + 15);
-      ctx.quadraticCurveTo(dogX - 10, dogY + 5, dogX - 5, dogY + 20);
+      ctx.quadraticCurveTo(dogX - 10, dogY + 5 + tailOffset, dogX - 5, dogY + 20);
       ctx.stroke();
 
-      // Лапы собачки
+      // Лапы собачки (анимируем шаги)
+      const legOffset = Math.abs(Math.sin(animationFrame * 0.3) * 5);
       ctx.fillStyle = 'black';
-      ctx.fillRect(dogX + 5, dogY + 22, 5, 8);
-      ctx.fillRect(dogX + 25, dogY + 22, 5, 8);
+      ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
+      ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
 
       // Глаза
       ctx.fillStyle = 'white';
@@ -94,6 +99,10 @@
         const treeX = (i * treeSpacing - backgroundX % treeSpacing);
         drawTree(treeX, 140);
       }
+
+      // Добавляем облака на небо
+      drawCloud(backgroundX * 0.5 % canvas.width, 50, 60);
+      drawCloud((backgroundX * 0.5 + 300) % canvas.width, 70, 80);
     }
 
     function drawTree(x, y) {
@@ -106,6 +115,16 @@
       ctx.moveTo(x - 20, y);
       ctx.lineTo(x + 30, y);
       ctx.lineTo(x + 5, y - 30);
+      ctx.fill();
+    }
+
+    function drawCloud(x, y, size) {
+      // Рисуем облако
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(x, y, size * 0.4, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.3, y - size * 0.2, size * 0.5, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.6, y, size * 0.4, 0, Math.PI * 2);
       ctx.fill();
     }
 
