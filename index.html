@@ -29,8 +29,8 @@
     let isJumping = false;
     let isMoving = false; // Начальное состояние: собака стоит
     let dogVerticalSpeed = 0;
-    const gravity = 0.5; // Гравитация
-    const jumpStrength = -8; // Сила прыжка
+    const gravity = 0.4; // Гравитация
+    const jumpStrength = -12; // Сила прыжка
     const passiveBackwardSpeed = 1; // Пассивная скорость назад
     const groundLevel = 160; // Уровень земли
 
@@ -132,7 +132,7 @@
           dogVerticalSpeed += gravity; // Применяем гравитацию
 
           // Горизонтальное движение только при прыжке
-          dogX += 1.5; // Собака прыгает вперёд
+          dogX += 2; // Собака прыгает вперёд
 
           // Приземление
           if (dogY >= groundLevel) {
