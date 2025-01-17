@@ -27,39 +27,62 @@
     let dogY = 160; // Положение собаки по оси Y
     let backgroundX = 0; // Смещение фона
     let isJumping = false;
-    let isMoving = false; // Начальное состояние: игра не началась
+    let isMoving = false; // Начальное состояние: собака стоит
     let dogVerticalSpeed = 0;
     const gravity = 0.4; // Гравитация
     const jumpStrength = -10; // Сила прыжка
     const passiveBackwardSpeed = 1; // Пассивная скорость назад
     const groundLevel = 160; // Уровень земли
+    let animationFrame = 0; // Счётчик для анимации собаки
 
     function drawDog() {
-      // Тело собаки
+      animationFrame++;
+
+      // Тело собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 20, dogY + 15, 20, 10, 0, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Голова собаки
+      // Голова собачки
       ctx.beginPath();
-      ctx.arc(dogX + 35, dogY + 5, 10, 0, 2 * Math.PI);
+      ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Уши собаки
+      // Уши собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY + 15, 5, 10, Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY - 5, 5, 10, -Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Хвост собаки
+      // Хвост собачки (анимируем махание)
       ctx.beginPath();
-      ctx.moveTo(dogX - 10, dogY + 15);
-      ctx.quadraticCurveTo(dogX - 20, dogY + 5, dogX - 15, dogY + 20);
+      const tailOffset = Math.sin(animationFrame * 0.2) * 5;
+      ctx.moveTo(dogX, dogY + 15);
+      ctx.quadraticCurveTo(dogX - 10, dogY + 5 + tailOffset, dogX - 5, dogY + 20);
       ctx.stroke();
+
+      // Лапы собачки (анимируем шаги)
+      const legOffset = Math.abs(Math.sin(animationFrame * 0.15) * 5);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
+      ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
+
+      // Глаза
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(dogX + 28, dogY - 3, 2, 0, 2 * Math.PI);
+      ctx.arc(dogX + 34, dogY - 3, 2, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Нос
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY + 2, 2, 0, 2 * Math.PI);
+      ctx.fill();
     }
 
     function drawBackground() {
@@ -108,11 +131,11 @@
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space') {
         if (!isMoving) {
-          isMoving = true; // Игра начинается
+          isMoving = true; // Собака начинает двигаться
         }
         if (!isJumping) {
           isJumping = true;
-          dogVerticalSpeed = jumpStrength;
+          dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
         }
         event.preventDefault();
       }
@@ -122,16 +145,24 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isMoving) {
-        // Вертикальное движение собаки
         if (isJumping) {
+          // Вертикальное движение
           dogY += dogVerticalSpeed;
-          dogVerticalSpeed += gravity;
+          dogVerticalSpeed += gravity; // Применяем гравитацию
 
+          // Горизонтальное движение только при прыжке
+          dogX += 2; // Собака прыгает вперёд
+
+          // Приземление
           if (dogY >= groundLevel) {
-            dogY = groundLevel;
-            isJumping = false;
-            dogVerticalSpeed = 0;
+            dogY = groundLevel; // Ограничиваем уровень земли
+            isJumping = false; // Заканчиваем прыжок
+            dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
           }
+        } else {
+          // Пассивное смещение назад, если не прыгает
+          dogX -= passiveBackwardSpeed;
+          if (dogX < 50) dogX = 50; // Ограничение, чтобы собака не уходила слишком влево
         }
 
         // Смещение фона для создания эффекта движения
@@ -139,7 +170,7 @@
       }
 
       drawBackground(); // Рисуем фон
-      drawDog(); // Рисуем собаку
+      drawDog(); // Рисуем собачку
 
       requestAnimationFrame(update);
     }
