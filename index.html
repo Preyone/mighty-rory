@@ -132,7 +132,7 @@
           dogX += forwardSpeed; // Собака движется вперёд, пока не достигнет maxDogX
         } else {
           backgroundX += forwardSpeed; // Фон движется
-          dogX = Math.max(maxDogX - passiveBackwardSpeed, maxDogX); // Собака слегка смещается назад
+          dogX -= passiveBackwardSpeed; // Собака смещается немного назад
         }
 
         // Приземление
@@ -147,7 +147,7 @@
           dogX += forwardSpeed;
         } else {
           backgroundX += forwardSpeed;
-          dogX = Math.max(maxDogX - passiveBackwardSpeed, maxDogX); // Собака слегка смещается назад
+          dogX -= passiveBackwardSpeed; // Собака смещается немного назад
         }
       }
 
