@@ -38,35 +38,47 @@
 
     function drawDog() {
       // Тело собачки
-      ctx.fillStyle = 'brown';
-      ctx.fillRect(dogX, dogY, 40, 30);
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
+      ctx.fill();
 
       // Голова собачки
       ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 10, 15, 0, 2 * Math.PI);
+      ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Ноги собачки
-      ctx.fillRect(dogX, dogY + 30, 10, 10);
-      ctx.fillRect(dogX + 30, dogY + 30, 10, 10);
+      // Уши собачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
+      ctx.fill();
 
       // Хвост собачки
       ctx.beginPath();
-      ctx.moveTo(dogX + 40, dogY + 15);
-      ctx.lineTo(dogX + 60, dogY + 5);
+      ctx.moveTo(dogX, dogY + 15);
+      ctx.quadraticCurveTo(dogX - 10, dogY + 5, dogX - 5, dogY + 20);
       ctx.stroke();
 
-      // Глаза собачки
+      // Лапы собачки
+      ctx.fillStyle = 'black';
+      ctx.fillRect(dogX + 5, dogY + 22, 5, 8);
+      ctx.fillRect(dogX + 25, dogY + 22, 5, 8);
+
+      // Глаза
       ctx.fillStyle = 'white';
       ctx.beginPath();
-      ctx.arc(dogX + 25, dogY - 15, 3, 0, 2 * Math.PI);
-      ctx.arc(dogX + 35, dogY - 15, 3, 0, 2 * Math.PI);
+      ctx.arc(dogX + 28, dogY - 3, 2, 0, 2 * Math.PI);
+      ctx.arc(dogX + 34, dogY - 3, 2, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Нос собачки
+      // Нос
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.arc(dogX + 30, dogY - 5, 3, 0, 2 * Math.PI);
+      ctx.arc(dogX + 30, dogY + 2, 2, 0, 2 * Math.PI);
       ctx.fill();
     }
 
