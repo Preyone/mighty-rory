@@ -39,7 +39,7 @@
       animationFrame++;
 
       // Тело собачки
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = '#8B4513'; // Коричневый цвет
       ctx.beginPath();
       ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
       ctx.fill();
@@ -49,8 +49,8 @@
       ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Уши собачки
-      ctx.fillStyle = 'black';
+      // Уши собачки (темнее для контраста)
+      ctx.fillStyle = '#5A3311';
       ctx.beginPath();
       ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
@@ -67,7 +67,7 @@
 
       // Лапы собачки (анимируем шаги)
       const legOffset = Math.abs(Math.sin(animationFrame * 0.15) * 5);
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = '#8B4513';
       ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
       ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
 
@@ -78,11 +78,23 @@
       ctx.arc(dogX + 34, dogY - 3, 2, 0, 2 * Math.PI);
       ctx.fill();
 
+      // Зрачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 28, dogY - 3, 1, 0, 2 * Math.PI);
+      ctx.arc(dogX + 34, dogY - 3, 1, 0, 2 * Math.PI);
+      ctx.fill();
+
       // Нос
       ctx.fillStyle = 'black';
       ctx.beginPath();
       ctx.arc(dogX + 30, dogY + 2, 2, 0, 2 * Math.PI);
       ctx.fill();
+
+      // Рот собачки (улыбка)
+      ctx.beginPath();
+      ctx.arc(dogX + 30, dogY + 7, 5, 0, Math.PI);
+      ctx.stroke();
     }
 
     function drawBackground() {
