@@ -31,7 +31,7 @@
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
     const forwardSpeed = 3; // Горизонтальная скорость
-    const passiveBackwardSpeed = 2; // Пассивная скорость назад
+    const passiveBackwardSpeed = 1; // Пассивная скорость назад
     const backgroundSpeed = 2; // Скорость прокрутки фона
     const groundLevel = 160; // Уровень земли
     const maxDogX = canvas.width * 0.8; // Максимальная позиция собаки (80% ширины холста)
@@ -132,7 +132,7 @@
           dogX += forwardSpeed; // Собака движется вперёд, пока не достигнет maxDogX
         } else {
           backgroundX += forwardSpeed; // Фон движется
-          dogX -= passiveBackwardSpeed; // Собака слегка смещается назад
+          dogX = Math.max(maxDogX - passiveBackwardSpeed, maxDogX); // Собака слегка смещается назад
         }
 
         // Приземление
@@ -147,7 +147,7 @@
           dogX += forwardSpeed;
         } else {
           backgroundX += forwardSpeed;
-          dogX -= passiveBackwardSpeed; // Пассивное смещение назад
+          dogX = Math.max(maxDogX - passiveBackwardSpeed, maxDogX); // Собака слегка смещается назад
         }
       }
 
