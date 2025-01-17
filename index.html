@@ -38,24 +38,24 @@
     function drawDog() {
       animationFrame++;
 
-      // Тело собаки
+      // Тело собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 20, dogY + 15, 20, 10, 0, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Голова собаки
+      // Голова собачки
       ctx.beginPath();
-      ctx.arc(dogX + 35, dogY + 5, 10, 0, 2 * Math.PI);
+      ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Уши собаки
+      // Уши собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY + 15, 5, 10, Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY - 5, 5, 10, -Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
 
       // Хвост собаки (анимируем махание)
