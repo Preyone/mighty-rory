@@ -38,52 +38,32 @@
     function drawDog() {
       animationFrame++;
 
-      // Тело собачки
+      // Тело собачки (прямоугольник)
       ctx.fillStyle = 'black';
-      ctx.beginPath();
-      ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
-      ctx.fill();
+      ctx.fillRect(dogX, dogY, 40, 20);
 
-      // Голова собачки
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Уши собачки
+      // Голова собачки (прямоугольник)
       ctx.fillStyle = 'black';
-      ctx.beginPath();
-      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
-      ctx.fill();
-
-      // Хвост собачки (скорректированный для прикрепления к телу)
-      ctx.beginPath();
-      ctx.moveTo(dogX + 5, dogY + 15);
-      ctx.quadraticCurveTo(dogX - 5, dogY + 10, dogX, dogY + 20);
-      ctx.stroke();
+      ctx.fillRect(dogX + 30, dogY - 10, 20, 20);
 
       // Лапы собачки (анимируем шаги)
       const legOffset = Math.abs(Math.sin(animationFrame * 0.1) * 5);
       ctx.fillStyle = 'black';
-      ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
-      ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
+      ctx.fillRect(dogX + 5, dogY + 20 - legOffset, 5, 8);
+      ctx.fillRect(dogX + 30, dogY + 20 + legOffset, 5, 8);
 
-      // Глаза собачки
+      // Хвост собачки (прямоугольник)
+      ctx.fillStyle = 'black';
+      ctx.fillRect(dogX - 10, dogY + 5, 10, 5);
+
+      // Глаза собачки (квадратики)
       ctx.fillStyle = 'white';
-      ctx.beginPath();
-      ctx.arc(dogX + 25, dogY - 5, 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(dogX + 35, dogY - 5, 2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.fillRect(dogX + 35, dogY - 5, 3, 3);
+      ctx.fillRect(dogX + 42, dogY - 5, 3, 3);
 
-      // Язычок собачки
+      // Язычок собачки (прямоугольник)
       ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(dogX + 30, dogY + 5, 3, 0, Math.PI);
-      ctx.fill();
+      ctx.fillRect(dogX + 40, dogY + 5, 5, 3);
     }
 
     function drawBackground() {
