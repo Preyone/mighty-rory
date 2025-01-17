@@ -30,7 +30,7 @@
     let isMoving = false; // Начальное состояние: собака стоит
     let dogVerticalSpeed = 0;
     const gravity = 0.4; // Гравитация
-    const jumpStrength = -12; // Сила прыжка
+    const jumpStrength = -10; // Сила прыжка
     const passiveBackwardSpeed = 1; // Пассивная скорость назад
     const groundLevel = 160; // Уровень земли
     let animationFrame = 0; // Счётчик для анимации собаки
@@ -66,7 +66,7 @@
       ctx.stroke();
 
       // Лапы собачки (анимируем шаги)
-      const legOffset = Math.abs(Math.sin(animationFrame * 0.3) * 5);
+      const legOffset = Math.abs(Math.sin(animationFrame * 0.15) * 5);
       ctx.fillStyle = 'black';
       ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
       ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
