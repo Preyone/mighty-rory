@@ -23,13 +23,15 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    let dogX = 50;
-    let dogY = 160;
+    let dogX = 50; // Горизонтальная позиция собаки
+    let dogY = 160; // Вертикальная позиция собаки
     let gradientX = 0;
     let isJumping = false;
     let dogVerticalSpeed = 0;
+    let dogHorizontalSpeed = 0; // Горизонтальная скорость
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
+    const forwardSpeed = 3; // Горизонтальное смещение
     const groundLevel = 160; // Уровень земли
 
     function drawDog() {
@@ -78,6 +80,7 @@
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
         dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
+        dogHorizontalSpeed = forwardSpeed; // Устанавливаем горизонтальную скорость
         event.preventDefault();
       }
     });
@@ -86,13 +89,19 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isJumping) {
+        // Вертикальное движение
         dogY += dogVerticalSpeed;
-        dogVerticalSpeed += gravity; // Применение гравитации
+        dogVerticalSpeed += gravity; // Применяем гравитацию
 
+        // Горизонтальное движение
+        dogX += dogHorizontalSpeed;
+
+        // Приземление
         if (dogY >= groundLevel) {
           dogY = groundLevel; // Ограничиваем уровень земли
           isJumping = false; // Заканчиваем прыжок
-          dogVerticalSpeed = 0; // Сбрасываем скорость
+          dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
+          dogHorizontalSpeed = 0; // Сбрасываем горизонтальную скорость
         }
       }
 
