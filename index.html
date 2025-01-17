@@ -41,34 +41,34 @@
       // Тело собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 20, dogY + 15, 25, 15, 0, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 25, dogY + 15, 30, 15, 0, 0, 2 * Math.PI);
       ctx.fill();
 
       // Голова собачки (вытянутая морда)
       ctx.beginPath();
-      ctx.ellipse(dogX + 45, dogY + 5, 15, 10, 0, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 55, dogY + 10, 15, 10, 0, 0, 2 * Math.PI);
       ctx.fill();
 
       // Уши собачки (свисающие вниз)
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 40, dogY + 12, 5, 15, Math.PI / 4, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 50, dogY + 20, 5, 15, Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
       ctx.beginPath();
-      ctx.ellipse(dogX + 40, dogY - 2, 5, 15, -Math.PI / 4, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 50, dogY, 5, 15, -Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
 
       // Хвост собачки (анимируем махание только если движется)
       if (isMoving) {
         ctx.beginPath();
         const tailOffset = Math.sin(animationFrame * 0.2) * 5;
-        ctx.moveTo(dogX, dogY + 15);
-        ctx.quadraticCurveTo(dogX - 10, dogY + 5 + tailOffset, dogX - 5, dogY + 20);
+        ctx.moveTo(dogX - 10, dogY + 15);
+        ctx.quadraticCurveTo(dogX - 20, dogY + 5 + tailOffset, dogX - 15, dogY + 20);
         ctx.stroke();
       } else {
         ctx.beginPath();
-        ctx.moveTo(dogX, dogY + 15);
-        ctx.quadraticCurveTo(dogX - 10, dogY + 5, dogX - 5, dogY + 20);
+        ctx.moveTo(dogX - 10, dogY + 15);
+        ctx.quadraticCurveTo(dogX - 20, dogY + 5, dogX - 15, dogY + 20);
         ctx.stroke();
       }
 
@@ -76,24 +76,30 @@
       const legOffset = isMoving ? Math.abs(Math.sin(animationFrame * 0.15) * 5) : 0;
       ctx.fillStyle = 'black';
       ctx.fillRect(dogX + 10, dogY + 22 - legOffset, 5, 8);
-      ctx.fillRect(dogX + 30, dogY + 22 + legOffset, 5, 8);
+      ctx.fillRect(dogX + 35, dogY + 22 + legOffset, 5, 8);
 
       // Глаза
       ctx.fillStyle = 'white';
       ctx.beginPath();
-      ctx.arc(dogX + 48, dogY, 2, 0, 2 * Math.PI);
+      ctx.arc(dogX + 50, dogY + 5, 2, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Зрачки
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(dogX + 50, dogY + 5, 1, 0, 2 * Math.PI);
       ctx.fill();
 
       // Нос (вытянутый)
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.arc(dogX + 55, dogY + 5, 2, 0, 2 * Math.PI);
+      ctx.arc(dogX + 60, dogY + 10, 2, 0, 2 * Math.PI);
       ctx.fill();
 
       // Рот (линия)
       ctx.beginPath();
-      ctx.moveTo(dogX + 50, dogY + 10);
-      ctx.lineTo(dogX + 60, dogY + 10);
+      ctx.moveTo(dogX + 55, dogY + 15);
+      ctx.lineTo(dogX + 62, dogY + 15);
       ctx.stroke();
     }
 
