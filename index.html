@@ -34,6 +34,7 @@
     const forwardSpeed = 3; // Горизонтальная скорость
     const backgroundSpeed = 2; // Скорость прокрутки фона
     const groundLevel = 160; // Уровень земли
+    const maxDogX = canvas.width * 0.8; // Максимальная позиция собаки (80% ширины холста)
 
     function drawDog() {
       // Тело собачки
@@ -115,8 +116,12 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += gravity; // Применяем гравитацию
 
-        // Горизонтальное движение собаки
-        dogX += dogHorizontalSpeed;
+        // Горизонтальное движение
+        if (dogX < maxDogX) {
+          dogX += dogHorizontalSpeed; // Собака движется до maxDogX
+        } else {
+          backgroundX += forwardSpeed; // После достижения maxDogX, движется фон
+        }
 
         // Приземление
         if (dogY >= groundLevel) {
@@ -125,11 +130,8 @@
           dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
           dogHorizontalSpeed = 0; // Сбрасываем горизонтальную скорость
         }
-      }
-
-      // Движение фона
-      if (!isJumping) {
-        backgroundX += backgroundSpeed; // Смещаем фон только при беге
+      } else {
+        backgroundX += backgroundSpeed; // Двигаем фон, если собака не прыгает
       }
 
       drawBackground(); // Рисуем фон
