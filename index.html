@@ -28,6 +28,9 @@
     let gradientX = 0;
     let isJumping = false;
     let dogVerticalSpeed = 0;
+    const gravity = 0.5; // Гравитация
+    const jumpStrength = -10; // Сила прыжка
+    const groundLevel = 160; // Уровень земли
 
     function drawDog() {
       // Тело собачки
@@ -63,36 +66,18 @@
       ctx.fill();
     }
 
-    function drawTree(x, y) {
-      ctx.fillStyle = 'brown';
-      ctx.fillRect(x, y, 10, 40);
-
-      ctx.fillStyle = 'green';
-      ctx.beginPath();
-      ctx.moveTo(x - 20, y);
-      ctx.lineTo(x + 30, y);
-      ctx.lineTo(x + 5, y - 30);
-      ctx.fill();
-    }
-
     function drawBackground() {
       const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
       gradient.addColorStop(0, '#87CEEB');
       gradient.addColorStop(1, '#ffffff');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.globalAlpha = 0.3; // Делаем деревья прозрачнее
-      drawTree(100, 170);
-      drawTree(250, 170);
-      drawTree(400, 170);
-      ctx.globalAlpha = 1; // Возвращаем непрозрачность
     }
 
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
-        dogVerticalSpeed = -10;
+        dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
         event.preventDefault();
       }
     });
@@ -100,34 +85,26 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      console.log(dogY, isJumping);
-
       if (isJumping) {
         dogY += dogVerticalSpeed;
-        dogX += dogVerticalSpeed * 0.5; // Собачка прыгает вправо
+        dogVerticalSpeed += gravity; // Применение гравитации
 
-        if (dogVerticalSpeed < 0) {
-          dogVerticalSpeed += 0.5;
-        } else {
-          dogVerticalSpeed += 1;
-        }
-
-        if (dogY > 190) {
-          dogY = 160;
-          isJumping = false;
-          dogVerticalSpeed = 0;
+        if (dogY >= groundLevel) {
+          dogY = groundLevel; // Ограничиваем уровень земли
+          isJumping = false; // Заканчиваем прыжок
+          dogVerticalSpeed = 0; // Сбрасываем скорость
         }
       }
 
-      gradientX -= 2; // Перемещаем градиент влево
+      gradientX -= 2; // Перемещение фона
       if (gradientX <= -canvas.width) {
-        gradientX = 0; // Возвращаем градиент в начальную позицию
+        gradientX = 0;
       }
 
-      drawBackground(); // Рисуем фон
-      drawDog(); // Рисуем собачку
+      drawBackground();
+      drawDog();
 
-      requestAnimationFrame(update); // Вызов в конце функции
+      requestAnimationFrame(update);
     }
 
     update();
