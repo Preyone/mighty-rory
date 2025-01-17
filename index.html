@@ -31,11 +31,8 @@
     let dogVerticalSpeed = 0;
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
-    const forwardSpeed = 1; // Уменьшенная горизонтальная скорость собаки вперёд
-    const passiveBackwardSpeed = 3; // Увеличенная пассивная скорость назад
-    const backgroundSpeed = 2; // Скорость прокрутки фона
+    const passiveBackwardSpeed = 1.5; // Пассивная скорость назад
     const groundLevel = 160; // Уровень земли
-    const maxDogX = canvas.width * 0.6; // Максимальная позиция собаки (60% ширины холста)
 
     function drawDog() {
       // Тело собачки
@@ -134,13 +131,8 @@
           dogY += dogVerticalSpeed;
           dogVerticalSpeed += gravity; // Применяем гравитацию
 
-          // Горизонтальное движение
-          if (dogX < maxDogX) {
-            dogX += forwardSpeed; // Собака движется вперёд до maxDogX
-          } else {
-            backgroundX += forwardSpeed; // Фон движется
-            dogX -= passiveBackwardSpeed; // Собака смещается назад
-          }
+          // Горизонтальное движение только при прыжке
+          dogX += 2; // Собака прыгает вперёд
 
           // Приземление
           if (dogY >= groundLevel) {
@@ -149,14 +141,13 @@
             dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
           }
         } else {
-          // Когда собака на земле
-          if (dogX < maxDogX) {
-            dogX += forwardSpeed; // Двигается вперёд
-          } else {
-            backgroundX += forwardSpeed; // Фон движется
-            dogX -= passiveBackwardSpeed; // Собака смещается назад
-          }
+          // Пассивное смещение назад, если не прыгает
+          dogX -= passiveBackwardSpeed;
+          if (dogX < 50) dogX = 50; // Ограничение, чтобы собака не уходила слишком влево
         }
+
+        // Смещение фона для создания эффекта движения
+        backgroundX += passiveBackwardSpeed;
       }
 
       drawBackground(); // Рисуем фон
