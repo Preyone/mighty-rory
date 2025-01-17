@@ -23,15 +23,16 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
-    let dogX = 50; // Горизонтальная позиция собаки
-    let dogY = 160; // Вертикальная позиция собаки
-    let gradientX = 0;
+    let dogX = 50; // Положение собаки по оси X
+    let dogY = 160; // Положение собаки по оси Y
+    let backgroundX = 0; // Смещение фона
     let isJumping = false;
     let dogVerticalSpeed = 0;
-    let dogHorizontalSpeed = 0; // Горизонтальная скорость
+    let dogHorizontalSpeed = 0; // Горизонтальная скорость собаки
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
-    const forwardSpeed = 3; // Горизонтальное смещение
+    const forwardSpeed = 3; // Горизонтальная скорость
+    const backgroundSpeed = 2; // Скорость прокрутки фона
     const groundLevel = 160; // Уровень земли
 
     function drawDog() {
@@ -69,11 +70,32 @@
     }
 
     function drawBackground() {
-      const gradient = ctx.createLinearGradient(gradientX, 0, gradientX + canvas.width, 0);
-      gradient.addColorStop(0, '#87CEEB');
-      gradient.addColorStop(1, '#ffffff');
-      ctx.fillStyle = gradient;
+      // Рисуем бесконечный фон
+      ctx.fillStyle = '#87CEEB'; // Небо
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#228B22'; // Земля
+      ctx.fillRect(0, 170, canvas.width, 30);
+
+      // Рисуем деревья с учётом смещения фона
+      const treeSpacing = 200; // Расстояние между деревьями
+      for (let i = -1; i < canvas.width / treeSpacing + 1; i++) {
+        const treeX = (i * treeSpacing - backgroundX % treeSpacing);
+        drawTree(treeX, 140);
+      }
+    }
+
+    function drawTree(x, y) {
+      // Рисуем дерево
+      ctx.fillStyle = 'brown'; // Ствол
+      ctx.fillRect(x, y, 10, 30);
+
+      ctx.fillStyle = 'green'; // Листва
+      ctx.beginPath();
+      ctx.moveTo(x - 20, y);
+      ctx.lineTo(x + 30, y);
+      ctx.lineTo(x + 5, y - 30);
+      ctx.fill();
     }
 
     document.addEventListener('keydown', function (event) {
@@ -93,7 +115,7 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += gravity; // Применяем гравитацию
 
-        // Горизонтальное движение
+        // Горизонтальное движение собаки
         dogX += dogHorizontalSpeed;
 
         // Приземление
@@ -105,13 +127,13 @@
         }
       }
 
-      gradientX -= 2; // Перемещение фона
-      if (gradientX <= -canvas.width) {
-        gradientX = 0;
+      // Движение фона
+      if (!isJumping) {
+        backgroundX += backgroundSpeed; // Смещаем фон только при беге
       }
 
-      drawBackground();
-      drawDog();
+      drawBackground(); // Рисуем фон
+      drawDog(); // Рисуем собачку
 
       requestAnimationFrame(update);
     }
