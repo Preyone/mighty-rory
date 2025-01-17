@@ -31,7 +31,7 @@
     let dogVerticalSpeed = 0;
     const gravity = 0.45; // Увеличили гравитацию для снижения скорости прыжка
     const jumpStrength = -9; // Уменьшили силу прыжка
-    const passiveBackwardSpeed = 1; // Пассивная скорость назад
+    const passiveBackwardSpeed = 0.5; // Небольшая пассивная скорость назад
     const groundLevel = 160; // Уровень земли
     let animationFrame = 0; // Счётчик для анимации собаки
 
@@ -46,11 +46,11 @@
       ctx.fillStyle = 'black';
       ctx.fillRect(dogX + 30, dogY - 10, 20, 20);
 
-      // Лапы собачки (анимируем шаги)
-      const legOffset = Math.abs(Math.sin(animationFrame * 0.1) * 5);
+      // Лапы собачки (анимируем шаги только при движении)
+      const legOffset = isMoving ? Math.abs(Math.sin(animationFrame * 0.1) * 5) : 0;
       ctx.fillStyle = 'black';
       ctx.fillRect(dogX + 5, dogY + 20 - legOffset, 5, 8);
-      ctx.fillRect(dogX + 30, dogY + 20 + legOffset, 5, 8);
+      ctx.fillRect(dogX + 25, dogY + 20 - legOffset, 5, 8);
 
       // Хвост собачки (прямоугольник)
       ctx.fillStyle = 'black';
@@ -137,10 +137,14 @@
             isJumping = false;
             dogVerticalSpeed = 0;
           }
+        } else {
+          // Пассивное движение собаки назад
+          dogX -= passiveBackwardSpeed;
+          if (dogX < 50) dogX = 50; // Ограничение позиции собаки
         }
 
         // Смещение фона для создания эффекта движения
-        backgroundX += passiveBackwardSpeed * 0.7; // Увеличили скорость прокрутки фона
+        backgroundX += passiveBackwardSpeed * 0.7;
       }
 
       drawBackground(); // Рисуем фон
