@@ -41,34 +41,34 @@
       // Тело собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 20, dogY + 15, 20, 10, 0, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 20, dogY + 15, 20, 12, 0, 0, 2 * Math.PI);
       ctx.fill();
 
       // Голова собачки
       ctx.beginPath();
-      ctx.arc(dogX + 35, dogY + 5, 10, 0, 2 * Math.PI);
+      ctx.arc(dogX + 30, dogY, 12, 0, 2 * Math.PI);
       ctx.fill();
 
       // Уши собачки
       ctx.fillStyle = 'black';
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY + 15, 5, 10, Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
       ctx.beginPath();
-      ctx.ellipse(dogX + 35, dogY - 5, 5, 10, -Math.PI / 6, 0, 2 * Math.PI);
+      ctx.ellipse(dogX + 30, dogY + 5, 8, 20, -Math.PI / 4, 0, 2 * Math.PI);
       ctx.fill();
 
       // Хвост собаки (фиксированный)
       ctx.beginPath();
       ctx.moveTo(dogX - 10, dogY + 15);
-      ctx.quadraticCurveTo(dogX - 20, dogY + 5, dogX - 15, dogY + 20);
+      ctx.quadraticCurveTo(dogX - 20, dogY + 10, dogX - 15, dogY + 20);
       ctx.stroke();
 
-      // Лапы собаки (анимируем шаги)
+      // Лапы собачки (анимируем шаги)
       const legOffset = Math.abs(Math.sin(animationFrame * 0.1) * 5);
       ctx.fillStyle = 'black';
-      ctx.fillRect(dogX + 10, dogY + 22 - legOffset, 5, 8);
-      ctx.fillRect(dogX + 30, dogY + 22 + legOffset, 5, 8);
+      ctx.fillRect(dogX + 5, dogY + 22 - legOffset, 5, 8);
+      ctx.fillRect(dogX + 25, dogY + 22 + legOffset, 5, 8);
     }
 
     function drawBackground() {
