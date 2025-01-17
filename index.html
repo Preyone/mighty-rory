@@ -27,6 +27,7 @@
     let dogY = 160; // Положение собаки по оси Y
     let backgroundX = 0; // Смещение фона
     let isJumping = false;
+    let isMoving = false; // Начальное состояние: собака стоит
     let dogVerticalSpeed = 0;
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
@@ -112,9 +113,14 @@
     }
 
     document.addEventListener('keydown', function (event) {
-      if (event.code === 'Space' && !isJumping) {
-        isJumping = true;
-        dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
+      if (event.code === 'Space') {
+        if (!isMoving) {
+          isMoving = true; // Собака начинает двигаться
+        }
+        if (!isJumping) {
+          isJumping = true;
+          dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
+        }
         event.preventDefault();
       }
     });
@@ -122,32 +128,34 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (isJumping) {
-        // Вертикальное движение
-        dogY += dogVerticalSpeed;
-        dogVerticalSpeed += gravity; // Применяем гравитацию
+      if (isMoving) {
+        if (isJumping) {
+          // Вертикальное движение
+          dogY += dogVerticalSpeed;
+          dogVerticalSpeed += gravity; // Применяем гравитацию
 
-        // Горизонтальное движение
-        if (dogX < maxDogX) {
-          dogX += forwardSpeed; // Собака движется вперёд до maxDogX
-        } else {
-          backgroundX += forwardSpeed; // Фон движется
-          dogX -= passiveBackwardSpeed; // Собака слегка отодвигается назад
-        }
+          // Горизонтальное движение
+          if (dogX < maxDogX) {
+            dogX += forwardSpeed; // Собака движется вперёд до maxDogX
+          } else {
+            backgroundX += forwardSpeed; // Фон движется
+            dogX -= passiveBackwardSpeed; // Собака слегка отодвигается назад
+          }
 
-        // Приземление
-        if (dogY >= groundLevel) {
-          dogY = groundLevel; // Ограничиваем уровень земли
-          isJumping = false; // Заканчиваем прыжок
-          dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
-        }
-      } else {
-        // Когда собака на земле
-        if (dogX < maxDogX) {
-          dogX += forwardSpeed; // Двигается вперёд
+          // Приземление
+          if (dogY >= groundLevel) {
+            dogY = groundLevel; // Ограничиваем уровень земли
+            isJumping = false; // Заканчиваем прыжок
+            dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
+          }
         } else {
-          backgroundX += forwardSpeed; // Фон движется
-          dogX -= passiveBackwardSpeed; // Смещается назад
+          // Когда собака на земле
+          if (dogX < maxDogX) {
+            dogX += forwardSpeed; // Двигается вперёд
+          } else {
+            backgroundX += forwardSpeed; // Фон движется
+            dogX -= passiveBackwardSpeed; // Смещается назад
+          }
         }
       }
 
