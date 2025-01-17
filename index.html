@@ -28,7 +28,6 @@
     let backgroundX = 0; // Смещение фона
     let isJumping = false;
     let dogVerticalSpeed = 0;
-    let dogHorizontalSpeed = 0; // Горизонтальная скорость собаки
     const gravity = 0.5; // Гравитация
     const jumpStrength = -10; // Сила прыжка
     const forwardSpeed = 3; // Горизонтальная скорость
@@ -103,7 +102,6 @@
       if (event.code === 'Space' && !isJumping) {
         isJumping = true;
         dogVerticalSpeed = jumpStrength; // Начальная скорость прыжка
-        dogHorizontalSpeed = forwardSpeed; // Устанавливаем горизонтальную скорость
         event.preventDefault();
       }
     });
@@ -116,11 +114,11 @@
         dogY += dogVerticalSpeed;
         dogVerticalSpeed += gravity; // Применяем гравитацию
 
-        // Горизонтальное движение
+        // Горизонтальное движение собаки
         if (dogX < maxDogX) {
-          dogX += dogHorizontalSpeed; // Собака движется до maxDogX
+          dogX += forwardSpeed; // Собака движется вправо до maxDogX
         } else {
-          backgroundX += forwardSpeed; // После достижения maxDogX, движется фон
+          backgroundX += forwardSpeed; // После достижения maxDogX фон движется
         }
 
         // Приземление
@@ -128,10 +126,10 @@
           dogY = groundLevel; // Ограничиваем уровень земли
           isJumping = false; // Заканчиваем прыжок
           dogVerticalSpeed = 0; // Сбрасываем вертикальную скорость
-          dogHorizontalSpeed = 0; // Сбрасываем горизонтальную скорость
         }
       } else {
-        backgroundX += backgroundSpeed; // Двигаем фон, если собака не прыгает
+        // Если собака не прыгает, только фон движется
+        backgroundX += backgroundSpeed;
       }
 
       drawBackground(); // Рисуем фон
