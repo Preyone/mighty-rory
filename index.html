@@ -69,6 +69,13 @@
     const groundLevel = 160; // Уровень земли
     let animationFrame = 0; // Счётчик для анимации собаки
 
+    // Препятствия
+    let obstacles = [];
+    const obstacleWidth = 20;
+    const obstacleHeight = 20;
+    const obstacleColor = 'brown';
+    const obstacleSpeed = passiveBackwardSpeed * 1.5;
+
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
@@ -154,6 +161,40 @@
       ctx.fill();
     }
 
+    function createObstacle() {
+      const x = canvas.width + Math.random() * 200; // Случайное начальное положение
+      obstacles.push({ x, y: groundLevel - obstacleHeight });
+    }
+
+    function drawObstacles() {
+      obstacles.forEach(obstacle => {
+        ctx.fillStyle = obstacleColor;
+        ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
+      });
+    }
+
+    function updateObstacles() {
+      obstacles.forEach((obstacle, index) => {
+        obstacle.x -= obstacleSpeed; // Движение влево
+        if (obstacle.x + obstacleWidth < 0) {
+          obstacles.splice(index, 1); // Удаление препятствий за экраном
+        }
+      });
+    }
+
+    function checkCollision() {
+      obstacles.forEach(obstacle => {
+        if (
+          dogX + 40 > obstacle.x &&
+          dogX < obstacle.x + obstacleWidth &&
+          dogY + 20 > obstacle.y
+        ) {
+          alert('Игра окончена! Вы столкнулись с препятствием.');
+          isMoving = false; // Остановка игры
+        }
+      });
+    }
+
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space') {
         if (!isMoving) {
@@ -166,6 +207,8 @@
         event.preventDefault();
       }
     });
+
+    setInterval(createObstacle, 2000); // Генерация препятствий каждые 2 секунды
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -198,10 +241,14 @@
         if (!isJumping && dogX > 50) {
           dogX -= passiveBackwardSpeed;
         }
+
+        updateObstacles(); // Обновление положения препятствий
+        checkCollision(); // Проверка столкновений
       }
 
       drawBackground(); // Рисуем фон
       drawDog(); // Рисуем собаку
+      drawObstacles(); // Рисуем препятствия
 
       requestAnimationFrame(update);
     }
