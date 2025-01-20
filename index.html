@@ -129,18 +129,25 @@
         // Вертикальное движение собаки
         if (isJumping) {
           dogY += dogVerticalSpeed;
-          dogX += 2; // Движение вперёд по дуге
           dogVerticalSpeed += gravity;
+
+          // Движение собаки вправо, пока она не достигнет 70% ширины экрана
+          if (dogX + 40 < canvas.width * 0.7) {
+            dogX += 2; // Движение вправо
+          } else {
+            backgroundX += 2; // Сдвиг фона, когда собака достигает края
+          }
 
           if (dogY >= groundLevel) {
             dogY = groundLevel;
             isJumping = false;
             dogVerticalSpeed = 0;
           }
-        } else {
-          // Пассивное движение собаки назад
+        }
+
+        // Пассивное движение собаки назад
+        if (!isJumping && dogX > 50) {
           dogX -= passiveBackwardSpeed;
-          if (dogX < 50) dogX = 50; // Ограничение позиции собаки
         }
 
         // Смещение фона для создания эффекта движения
