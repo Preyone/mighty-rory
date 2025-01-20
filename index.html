@@ -134,9 +134,10 @@
           // Движение собаки вправо, пока она не достигнет 75% ширины экрана
           if (dogX + 40 < canvas.width * 0.75) {
             dogX += 2; // Движение вправо
-          } else {
-            backgroundX += passiveBackwardSpeed * 0.7; // Стабильная скорость фона
           }
+
+          // Фон движется во время прыжков
+          backgroundX += passiveBackwardSpeed * 0.7;
 
           if (dogY >= groundLevel) {
             dogY = groundLevel;
