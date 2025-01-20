@@ -163,7 +163,7 @@
 
     function createObstacle() {
       const x = canvas.width + Math.random() * 200; // Случайное начальное положение
-      obstacles.push({ x, y: groundLevel - obstacleHeight });
+      obstacles.push({ x, y: groundLevel });
     }
 
     function drawObstacles() {
@@ -189,8 +189,8 @@
           dogX < obstacle.x + obstacleWidth &&
           dogY + 20 > obstacle.y
         ) {
-          alert('Игра окончена! Вы столкнулись с препятствием.');
-          isMoving = false; // Остановка игры
+          // alert('Игра окончена! Вы столкнулись с препятствием.');
+          console.log('Собака столкнулась с препятствием!'); // Остановка игры
         }
       });
     }
