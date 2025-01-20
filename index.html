@@ -31,7 +31,7 @@
     let dogVerticalSpeed = 0;
     const gravity = 0.45; // Увеличили гравитацию для снижения скорости прыжка
     const jumpStrength = -9; // Уменьшили силу прыжка
-    const passiveBackwardSpeed = 0.7; // Небольшая пассивная скорость назад
+    const passiveBackwardSpeed = 0.9; // Небольшая пассивная скорость назад
     const groundLevel = 160; // Уровень земли
     let animationFrame = 0; // Счётчик для анимации собаки
 
@@ -132,7 +132,7 @@
           dogVerticalSpeed += gravity;
 
           // Движение собаки вправо, пока она не достигнет 75% ширины экрана
-          if (dogX + 40 < canvas.width * 0.75) {
+          if (dogX + 40 < canvas.width * 0.85) {
             dogX += 2; // Движение вправо
           }
 
