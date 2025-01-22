@@ -76,6 +76,10 @@
     const obstacleColor = 'brown';
     const obstacleSpeed = passiveBackwardSpeed * 1.5;
 
+    // Загрузка изображения облака
+    const cloudImage = new Image();
+    cloudImage.src = './assets/cloud.png';
+
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
@@ -126,16 +130,16 @@
       ctx.fillStyle = '#228B22'; // Земля
       ctx.fillRect(0, 170, canvas.width, 30);
 
-      // Рисуем деревья с учётом смещения фона
+      // Рисуем деревья
       const treeSpacing = 200; // Расстояние между деревьями
       for (let i = -1; i < canvas.width / treeSpacing + 1; i++) {
         const treeX = (i * treeSpacing - backgroundX % treeSpacing);
         drawTree(treeX, 140);
       }
 
-      // Добавляем облака на небо
-      drawCloud(backgroundX * 0.5 % canvas.width, 50, 60);
-      drawCloud((backgroundX * 0.5 + 300) % canvas.width, 70, 80);
+      // Рисуем облака с использованием изображения
+      drawCloud(backgroundX * 0.5 % canvas.width, 50, 100);
+      drawCloud((backgroundX * 0.5 + 300) % canvas.width, 70, 120);
     }
 
     function drawTree(x, y) {
@@ -152,18 +156,12 @@
     }
 
     function drawCloud(x, y, size) {
-      // Рисуем облако
-      ctx.fillStyle = 'white';
-      ctx.beginPath();
-      ctx.arc(x, y, size * 0.4, 0, Math.PI * 2);
-      ctx.arc(x + size * 0.3, y - size * 0.2, size * 0.5, 0, Math.PI * 2);
-      ctx.arc(x + size * 0.6, y, size * 0.4, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.drawImage(cloudImage, x, y, size, size * 0.5); // Используем изображение облака
     }
 
     function createObstacle() {
       const x = canvas.width + Math.random() * 200; // Случайное начальное положение
-      obstacles.push({ x, y: groundLevel });
+      obstacles.push({ x, y: groundLevel - obstacleHeight });
     }
 
     function drawObstacles() {
@@ -189,8 +187,7 @@
           dogX < obstacle.x + obstacleWidth &&
           dogY + 20 > obstacle.y
         ) {
-          // alert('Игра окончена! Вы столкнулись с препятствием.');
-          console.log('Собака столкнулась с препятствием!'); // Остановка игры
+          console.log('Собака столкнулась с препятствием!');
         }
       });
     }
