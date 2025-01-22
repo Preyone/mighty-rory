@@ -136,12 +136,17 @@
     function generateClouds() {
       clouds = [];
       for (let i = 0; i < 5; i++) {
-        clouds.push({
+        const newCloud = {
           x: Math.random() * canvas.width,
           y: Math.random() * 50 + 20,
           size: Math.random() * 40 + 80,
           image: cloudImages[Math.floor(Math.random() * cloudImages.length)]
-        });
+        };
+        if (clouds.every(cloud => Math.abs(cloud.x - newCloud.x) > 100)) {
+          clouds.push(newCloud);
+        } else {
+          i--; // Повторяем попытку, если облака слишком близко
+        }
       }
     }
 
