@@ -63,8 +63,8 @@
     let isJumping = false;
     let isMoving = false; // Начальное состояние: игра не началась
     let dogVerticalSpeed = 0;
-    const gravity = 0.3; // Уменьшенная гравитация для более плавного падения
-    const jumpStrength = -8; // Чуть ослабленный прыжок
+    const gravity = 0.4; // Увеличили гравитацию для снижения скорости прыжка
+    const jumpStrength = -9; // Уменьшили силу прыжка
     const passiveBackwardSpeed = 0.6; // Небольшая пассивная скорость назад
     const groundLevel = 160; // Уровень земли
     let animationFrame = 0; // Счётчик для анимации собаки
@@ -228,4 +228,76 @@
     function checkCollision() {
       obstacles.forEach(obstacle => {
         if (
-          dogX +
+          dogX + 40 > obstacle.x &&
+          dogX < obstacle.x + obstacleWidth &&
+          dogY + 20 > obstacle.y
+        ) {
+          console.log('Собака столкнулась с препятствием!');
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.code === 'Space') {
+        if (!isMoving) {
+          isMoving = true; // Игра начинается
+        }
+        if (!isJumping) {
+          isJumping = true;
+          dogVerticalSpeed = jumpStrength;
+        }
+        event.preventDefault();
+      }
+    });
+
+    setInterval(createObstacle, 2000); // Генерация препятствий каждые 2 секунды
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (isMoving) {
+        // Вертикальное движение собаки
+        if (isJumping) {
+          dogY += dogVerticalSpeed;
+          dogVerticalSpeed += gravity;
+
+          // Движение собаки вправо, пока она не достигнет 75% ширины экрана
+          if (dogX + 40 < canvas.width * 0.85) {
+            dogX += 1.8; // Движение вправо
+          }
+
+          // Фон движется во время прыжков
+          backgroundX += passiveBackwardSpeed;
+
+          if (dogY >= groundLevel) {
+            dogY = groundLevel;
+            isJumping = false;
+            dogVerticalSpeed = 0;
+          }
+        } else {
+          // Смещение фона, если собака стоит на земле
+          backgroundX += passiveBackwardSpeed;
+        }
+
+        // Пассивное движение собаки назад
+        if (!isJumping && dogX > 50) {
+          dogX -= passiveBackwardSpeed;
+        }
+
+        updateClouds(); // Обновление положения облаков
+        updateObstacles(); // Обновление положения препятствий
+        checkCollision(); // Проверка столкновений
+      }
+
+      drawBackground(); // Рисуем фон
+      drawDog(); // Рисуем собаку
+      drawObstacles(); // Рисуем препятствия
+
+      requestAnimationFrame(update);
+    }
+  </script>
+
+</body>
+
+</html>
+
