@@ -90,7 +90,7 @@
     });
 
     let currentFrame = 0; // Индекс текущего кадра
-    const frameDelay = 20; // Количество обновлений перед сменой кадра
+    const frameDelay = 15; // Количество обновлений перед сменой кадра
     let frameCounter = 0; // Счётчик для смены кадров
 
     // Загрузка изображений облаков
@@ -134,19 +134,7 @@
       }
 
       // Рисуем изображение собаки
-      // Размер одного кадра в спрайте
-      const frameWidth = 200;
-      const frameHeight = 529;
-
-      // Координаты текущего кадра в спрайте
-      const sx = currentFrame * frameWidth;
-      const sy = 0;
-
-      // Очищаем область собаки перед отрисовкой
-      ctx.clearRect(dogX, dogY - 20, 80, 42.32);
-
-      // Отрисовываем только нужный кадр
-      ctx.drawImage(frame, sx, sy, frameWidth, frameHeight, dogX, dogY - 20, 80, 42.32);
+      ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
 
     function generateClouds() {
