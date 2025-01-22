@@ -90,7 +90,7 @@
     });
 
     let currentFrame = 0; // Индекс текущего кадра
-    const frameDelay = 5; // Количество обновлений перед сменой кадра
+    const frameDelay = 10; // Количество обновлений перед сменой кадра
     let frameCounter = 0; // Счётчик для смены кадров
 
     // Загрузка изображений облаков
@@ -134,7 +134,7 @@
       }
 
       // Рисуем изображение собаки
-      ctx.drawImage(frame, dogX, dogY - 20, 50, 50);
+      ctx.drawImage(frame, dogX, dogY - 20, 60, 60);
     }
 
     function generateClouds() {
