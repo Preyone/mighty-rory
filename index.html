@@ -76,9 +76,17 @@
     const obstacleColor = 'brown';
     const obstacleSpeed = passiveBackwardSpeed * 1.5;
 
-    // Загрузка изображения облака
-    const cloudImage = new Image();
-    cloudImage.src = './assets/cloud.png';
+    // Загрузка изображений облаков
+    const cloudImages = [
+      './assets/cloud.png',
+      './assets/cloud 2.png',
+      './assets/cloud 3.png',
+      './assets/cloud 4.png'
+    ].map(src => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
@@ -137,7 +145,7 @@
         drawTree(treeX, 140);
       }
 
-      // Рисуем облака с использованием изображения
+      // Рисуем облака с использованием рандомного изображения
       drawCloud(backgroundX * 0.5 % canvas.width, 50, 100);
       drawCloud((backgroundX * 0.5 + 300) % canvas.width, 70, 120);
     }
@@ -156,7 +164,8 @@
     }
 
     function drawCloud(x, y, size) {
-      ctx.drawImage(cloudImage, x, y, size, size * 0.5); // Используем изображение облака
+      const randomCloud = cloudImages[Math.floor(Math.random() * cloudImages.length)];
+      ctx.drawImage(randomCloud, x, y, size, size * 0.5);
     }
 
     function createObstacle() {
