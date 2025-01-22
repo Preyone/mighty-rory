@@ -206,13 +206,33 @@
 
     function createObstacle() {
       const x = canvas.width + Math.random() * 200; // Случайное начальное положение
-      obstacles.push({ x, y: groundLevel - obstacleHeight });
+const y = groundLevel - obstacleHeight; // Устанавливаем препятствия на уровне земли
+      obstacles.push({ x, y });
     }
 
     function drawObstacles() {
-      obstacles.forEach(obstacle => {
-        ctx.fillStyle = obstacleColor;
-        ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
+  obstacles.forEach(obstacle => {
+    // Рисуем основание препятствия
+    ctx.fillStyle = 'brown';
+    ctx.beginPath();
+    ctx.arc(
+      obstacle.x + obstacleWidth / 2,
+      obstacle.y + obstacleHeight / 2,
+      obstacleWidth / 2,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+
+    // Рисуем верхнюю часть препятствия
+    ctx.beginPath();
+    ctx.moveTo(obstacle.x, obstacle.y + obstacleHeight / 2);
+    ctx.lineTo(obstacle.x + obstacleWidth / 2, obstacle.y);
+    ctx.lineTo(obstacle.x + obstacleWidth, obstacle.y + obstacleHeight / 2);
+    ctx.closePath();
+    ctx.fill();
+  });
+}
       });
     }
 
