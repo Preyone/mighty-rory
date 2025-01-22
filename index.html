@@ -88,10 +88,13 @@
       return img;
     });
 
+    let clouds = []; // Массив облаков
+
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
       isMoving = true;
+      generateClouds(); // Генерация облаков при старте игры
       update();
     });
 
@@ -130,6 +133,37 @@
       ctx.fillRect(dogX + 40, dogY + 5, 5, 3);
     }
 
+    function generateClouds() {
+      clouds = [];
+      for (let i = 0; i < 5; i++) {
+        clouds.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * 50 + 20,
+          size: Math.random() * 40 + 80,
+          image: cloudImages[Math.floor(Math.random() * cloudImages.length)]
+        });
+      }
+    }
+
+    function drawClouds() {
+      clouds.forEach(cloud => {
+        ctx.drawImage(cloud.image, cloud.x, cloud.y, cloud.size, cloud.size * 0.5);
+      });
+    }
+
+    function updateClouds() {
+      clouds.forEach(cloud => {
+        cloud.x -= passiveBackwardSpeed * 0.4; // Движение облаков влево
+        if (cloud.x + cloud.size < 0) {
+          // Перемещаем облако за правый край с новыми параметрами
+          cloud.x = canvas.width + Math.random() * 100;
+          cloud.y = Math.random() * 50 + 20;
+          cloud.size = Math.random() * 40 + 80;
+          cloud.image = cloudImages[Math.floor(Math.random() * cloudImages.length)];
+        }
+      });
+    }
+
     function drawBackground() {
       // Рисуем бесконечный фон
       ctx.fillStyle = '#87CEEB'; // Небо
@@ -145,9 +179,7 @@
         drawTree(treeX, 140);
       }
 
-      // Рисуем облака с использованием рандомного изображения
-      drawCloud(backgroundX * 0.5 % canvas.width, 50, 100);
-      drawCloud((backgroundX * 0.5 + 300) % canvas.width, 70, 120);
+      drawClouds(); // Рисуем облака
     }
 
     function drawTree(x, y) {
@@ -161,11 +193,6 @@
       ctx.lineTo(x + 30, y);
       ctx.lineTo(x + 5, y - 30);
       ctx.fill();
-    }
-
-    function drawCloud(x, y, size) {
-      const randomCloud = cloudImages[Math.floor(Math.random() * cloudImages.length)];
-      ctx.drawImage(randomCloud, x, y, size, size * 0.5);
     }
 
     function createObstacle() {
@@ -248,6 +275,7 @@
           dogX -= passiveBackwardSpeed;
         }
 
+        updateClouds(); // Обновление положения облаков
         updateObstacles(); // Обновление положения препятствий
         checkCollision(); // Проверка столкновений
       }
