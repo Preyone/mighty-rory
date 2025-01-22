@@ -134,7 +134,16 @@
       }
 
       // Рисуем изображение собаки
-      ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
+      // Размер одного кадра в спрайте
+      const frameWidth = 200;
+      const frameHeight = 529;
+
+      // Координаты текущего кадра в спрайте
+      const sx = currentFrame * frameWidth;
+      const sy = 0;
+
+      // Отрисовываем только нужный кадр
+      ctx.drawImage(frame, sx, sy, frameWidth, frameHeight, dogX, dogY - 20, 80, 42.32);
     }
 
     function generateClouds() {
