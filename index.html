@@ -66,7 +66,7 @@
     const gravity = 0.2;
     const jumpStrength = -7;
     const passiveBackwardSpeed = 0.6;
-    const groundLevel = 170; // Изменено: земля теперь точно указана
+    const groundLevel = 170;
     let animationFrame = 0;
 
     let obstacles = [];
@@ -185,17 +185,22 @@
       for (let i = 0; i < canvas.width / treeSpacing + 2; i++) {
         const newTree = {
           x: i * treeSpacing + Math.random() * 50,
-          y: groundLevel - 70, // Уровень земли минус небольшой отступ
+          y: groundLevel - 70,
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
           size: Math.random() * 30 + 70
         };
-        trees.push(newTree);
+        // Ensure no trees are too close to each other
+        if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
+          trees.push(newTree);
+        } else {
+          i--;
+        }
       }
     }
 
     function drawTrees() {
       trees.forEach(tree => {
-        ctx.drawImage(tree.image, tree.x, tree.y, tree.size, tree.size);
+        ctx.drawImage(tree.image, tree.x, groundLevel - tree.size, tree.size, tree.size);
       });
     }
 
