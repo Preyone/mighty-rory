@@ -207,7 +207,7 @@
     function drawTrees() {
       trees.forEach(tree => {
         // Увеличиваем смещение по Y
-        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 15), tree.size, tree.size);
+        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 5), tree.size, tree.size);
       });
     }
 
