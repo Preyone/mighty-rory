@@ -10,7 +10,7 @@
     }
 
     canvas {
-      display: none;
+      /*  display: none;  Убираем, чтобы canvas был виден */
       margin: 50px auto;
     }
 
@@ -206,7 +206,8 @@
 
     function drawTrees() {
       trees.forEach(tree => {
-        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25))), tree.size, tree.size);
+        // Смещаем деревья вниз, чтобы скрыть корни
+        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 10), tree.size, tree.size);
       });
     }
 
@@ -225,16 +226,14 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawTrees(); // Draw trees first
+      drawTrees(); // Рисуем деревья ПЕРВЫМИ
 
       // Draw land using repeated images
       for (let x = 0; x < canvas.width; x += 42) {
         ctx.drawImage(landImage, x, groundLevel, 42, 52);
       }
 
-      drawClouds();
-      drawTrees();
-      drawClouds();
+      drawClouds(); 
     }
 
     function createObstacle() {
