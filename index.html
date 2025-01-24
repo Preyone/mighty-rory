@@ -194,7 +194,7 @@
       for (let i = 0; i < canvas.width / treeSpacing + 2; i++) {
         const newTree = {
           x: i * treeSpacing + Math.random() * 50, // Немного рандомизации позиции
-          y: 140, // Уровень земли для деревьев (сравнимо с предыдущими нарисованными)
+          y: groundLevel - obstacleHeight - 10, // На уровне препятствий, но немного ниже для фона
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
           size: Math.random() * 30 + 70 // Увеличенный размер дерева
         };
@@ -210,7 +210,7 @@
 
     function updateTrees() {
       trees.forEach(tree => {
-        tree.x -= passiveBackwardSpeed; // Медленное движение деревьев влево
+        tree.x -= passiveBackwardSpeed * 0.8; // Медленное движение деревьев влево
         if (tree.x + tree.size < 0) {
           tree.x = canvas.width + Math.random() * 100; // Перемещаем дерево за экран
           tree.image = treeImages[Math.floor(Math.random() * treeImages.length)];
