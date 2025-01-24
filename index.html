@@ -225,6 +225,8 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      drawTrees(); // Draw trees first
+
       // Draw land using repeated images
       for (let x = 0; x < canvas.width; x += 42) {
         ctx.drawImage(landImage, x, groundLevel, 42, 52);
