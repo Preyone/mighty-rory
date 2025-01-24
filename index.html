@@ -208,8 +208,8 @@
     }
 
     function createObstacle() {
-      const x = canvas.width + Math.random() * 200; // Появляются за пределами экрана
-      const y = groundLevel - obstacleHeight; // Располагаются на уровне земли
+      const x = canvas.width + Math.random() * 300; // Появляются за пределами экрана
+      const y = groundLevel - obstacleHeight / 2; // Устанавливаем препятствия на уровне лап собаки
       obstacles.push({ x, y });
     }
 
@@ -254,7 +254,7 @@
       }
     });
 
-    setInterval(createObstacle, 2000); // Генерация препятствий каждые 2 секунды
+    setInterval(createObstacle, 3000); // Генерация препятствий каждые 3 секунды
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
