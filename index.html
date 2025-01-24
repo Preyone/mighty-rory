@@ -108,13 +108,25 @@
       return img;
     });
 
+    // Загрузка изображений деревьев
+    const treeImages = [
+      './assets/tree 1.png',
+      './assets/tree 2.png'
+    ].map(src => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+
     let clouds = []; // Массив облаков
+    let trees = []; // Массив деревьев
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
       isMoving = true;
       generateClouds(); // Генерация облаков при старте игры
+      generateTrees(); // Генерация деревьев при старте игры
       update();
     });
 
@@ -176,6 +188,37 @@
       });
     }
 
+    function generateTrees() {
+      trees = [];
+      const treeSpacing = 200;
+      for (let i = 0; i < canvas.width / treeSpacing + 2; i++) {
+        const newTree = {
+          x: i * treeSpacing + Math.random() * 50, // Немного рандомизации позиции
+          y: 130, // Уровень земли для деревьев
+          image: treeImages[Math.floor(Math.random() * treeImages.length)],
+          size: Math.random() * 20 + 50 // Размер дерева
+        };
+        trees.push(newTree);
+      }
+    }
+
+    function drawTrees() {
+      trees.forEach(tree => {
+        ctx.drawImage(tree.image, tree.x, tree.y, tree.size, tree.size);
+      });
+    }
+
+    function updateTrees() {
+      trees.forEach(tree => {
+        tree.x -= passiveBackwardSpeed * 2; // Движение деревьев влево
+        if (tree.x + tree.size < 0) {
+          tree.x = canvas.width + Math.random() * 100; // Перемещаем дерево за экран
+          tree.image = treeImages[Math.floor(Math.random() * treeImages.length)];
+          tree.size = Math.random() * 20 + 50;
+        }
+      });
+    }
+
     function drawBackground() {
       // Рисуем бесконечный фон
       ctx.fillStyle = '#87CEEB'; // Небо
@@ -184,27 +227,8 @@
       ctx.fillStyle = '#228B22'; // Земля
       ctx.fillRect(0, 170, canvas.width, 30);
 
-      // Рисуем деревья
-      const treeSpacing = 200; // Расстояние между деревьями
-      for (let i = -1; i < canvas.width / treeSpacing + 1; i++) {
-        const treeX = (i * treeSpacing - backgroundX % treeSpacing);
-        drawTree(treeX, 140);
-      }
-
+      drawTrees(); // Рисуем деревья
       drawClouds(); // Рисуем облака
-    }
-
-    function drawTree(x, y) {
-      // Рисуем дерево
-      ctx.fillStyle = 'brown'; // Ствол
-      ctx.fillRect(x, y, 10, 30);
-
-      ctx.fillStyle = 'green'; // Листва
-      ctx.beginPath();
-      ctx.moveTo(x - 20, y);
-      ctx.lineTo(x + 30, y);
-      ctx.lineTo(x + 5, y - 30);
-      ctx.fill();
     }
 
     function createObstacle() {
@@ -289,6 +313,7 @@
         }
 
         updateClouds(); // Обновление положения облаков
+        updateTrees(); // Обновление положения деревьев
         updateObstacles(); // Обновление положения препятствий
         checkCollision(); // Проверка столкновений
       }
