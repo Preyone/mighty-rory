@@ -133,15 +133,19 @@
 
     function drawDog() {
       let frame;
-      if (isJumping) {
-        frame = dogFrames[4];
-      } else {
-        frame = dogFrames[currentFrame];
-        frameCounter++;
-        if (frameCounter >= frameDelay) {
-          currentFrame = (currentFrame + 1) % 4;
-          frameCounter = 0;
+      if (isMoving) {
+        if (isJumping) {
+          frame = dogFrames[4];
+        } else {
+          frame = dogFrames[currentFrame];
+          frameCounter++;
+          if (frameCounter >= frameDelay) {
+            currentFrame = (currentFrame + 1) % 4;
+            frameCounter = 0;
+          }
         }
+      } else {
+        frame = dogFrames[0]; // Static frame when not moving
       }
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
