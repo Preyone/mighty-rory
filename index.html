@@ -77,6 +77,9 @@
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
 
+    const landImage = new Image();
+    landImage.src = './assets/land.png';
+
     const dogFrames = [
       './assets/dog_run_1.png',
       './assets/dog_run_2.png',
@@ -219,8 +222,10 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#228B22';
-      ctx.fillRect(0, groundLevel, canvas.width, 30);
+      // Draw land using repeated images
+      for (let x = 0; x < canvas.width; x += 42) {
+        ctx.drawImage(landImage, x, groundLevel, 42, 52);
+      }
 
       drawTrees();
       drawClouds();
