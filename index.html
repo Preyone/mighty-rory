@@ -58,7 +58,7 @@
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
-    let dogY = 248; // Start on the ground level
+    let dogY = 248; 
     let backgroundX = 0;
     let isJumping = false;
     let isMoving = false;
@@ -66,7 +66,7 @@
     const gravity = 0.2;
     const jumpStrength = -7;
     const passiveBackwardSpeed = 0.6;
-    const groundLevel = 248; // Adjusted for new canvas height
+    const groundLevel = 248; 
     let animationFrame = 0;
 
     let obstacles = [];
@@ -145,7 +145,7 @@
           }
         }
       } else {
-        frame = dogFrames[0]; // Static frame when not moving
+        frame = dogFrames[0]; 
       }
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
@@ -193,9 +193,9 @@
           x: i * treeSpacing + Math.random() * 50,
           y: groundLevel - 70,
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
-          size: Math.random() * 30 + 70
+          // Увеличиваем базовый размер в 1.5 раза
+          size: Math.random() * 45 + 105  
         };
-        // Ensure no trees are too close to each other
         if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
           trees.push(newTree);
         } else {
@@ -206,8 +206,8 @@
 
     function drawTrees() {
       trees.forEach(tree => {
-        // Смещаем деревья вниз, чтобы скрыть корни
-        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 10), tree.size, tree.size);
+        // Увеличиваем смещение по Y
+        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 15), tree.size, tree.size);
       });
     }
 
@@ -217,7 +217,7 @@
         if (tree.x + tree.size < 0) {
           tree.x = canvas.width + Math.random() * 100;
           tree.image = treeImages[Math.floor(Math.random() * treeImages.length)];
-          tree.size = Math.random() * 30 + 70;
+          tree.size = Math.random() * 45 + 105;
         }
       });
     }
@@ -226,9 +226,8 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawTrees(); // Рисуем деревья ПЕРВЫМИ
+      drawTrees(); 
 
-      // Draw land using repeated images
       for (let x = 0; x < canvas.width; x += 42) {
         ctx.drawImage(landImage, x, groundLevel, 42, 52);
       }
