@@ -57,29 +57,26 @@
     const startGameButton = document.getElementById('startGame');
     const infoButton = document.getElementById('infoButton');
 
-    let dogX = 50; // Положение собаки по оси X
-    let dogY = 160; // Положение собаки по оси Y
-    let backgroundX = 0; // Смещение фона
+    let dogX = 50;
+    let dogY = 160;
+    let backgroundX = 0;
     let isJumping = false;
-    let isMoving = false; // Начальное состояние: игра не началась
+    let isMoving = false;
     let dogVerticalSpeed = 0;
-    const gravity = 0.2; // Уменьшена гравитация для более плавного падения
-    const jumpStrength = -7; // Уменьшена начальная скорость прыжка
-    const passiveBackwardSpeed = 0.6; // Небольшая пассивная скорость назад
-    const groundLevel = 160; // Уровень земли
-    let animationFrame = 0; // Счётчик для анимации собаки
+    const gravity = 0.2;
+    const jumpStrength = -7;
+    const passiveBackwardSpeed = 0.6;
+    const groundLevel = 160;
+    let animationFrame = 0;
 
-    // Препятствия
     let obstacles = [];
-    const obstacleWidth = 40; // Уменьшенная ширина препятствия
-    const obstacleHeight = 44; // Уменьшенная высота препятствия
+    const obstacleWidth = 40;
+    const obstacleHeight = 44;
     const obstacleSpeed = passiveBackwardSpeed * 1.5;
 
-    // Загрузка изображения препятствия
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
 
-    // Загрузка кадров собаки
     const dogFrames = [
       './assets/dog_run_1.png',
       './assets/dog_run_2.png',
@@ -92,11 +89,10 @@
       return img;
     });
 
-    let currentFrame = 0; // Индекс текущего кадра
-    const frameDelay = 25; // Количество обновлений перед сменой кадра
-    let frameCounter = 0; // Счётчик для смены кадров
+    let currentFrame = 0;
+    const frameDelay = 25;
+    let frameCounter = 0;
 
-    // Загрузка изображений облаков
     const cloudImages = [
       './assets/cloud.png',
       './assets/cloud 2.png',
@@ -108,7 +104,6 @@
       return img;
     });
 
-    // Загрузка изображений деревьев
     const treeImages = [
       './assets/tree 1.png',
       './assets/tree 2.png'
@@ -118,15 +113,15 @@
       return img;
     });
 
-    let clouds = []; // Массив облаков
-    let trees = []; // Массив деревьев
+    let clouds = [];
+    let trees = [];
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
       isMoving = true;
-      generateClouds(); // Генерация облаков при старте игры
-      generateTrees(); // Генерация деревьев при старте игры
+      generateClouds();
+      generateTrees();
       update();
     });
 
@@ -135,20 +130,17 @@
     });
 
     function drawDog() {
-      // Определяем текущий кадр
       let frame;
       if (isJumping) {
-        frame = dogFrames[4]; // Используем кадр прыжка
+        frame = dogFrames[4];
       } else {
-        frame = dogFrames[currentFrame]; // Используем кадры для бега
+        frame = dogFrames[currentFrame];
         frameCounter++;
         if (frameCounter >= frameDelay) {
-          currentFrame = (currentFrame + 1) % 4; // Циклически переключаем кадры
+          currentFrame = (currentFrame + 1) % 4;
           frameCounter = 0;
         }
       }
-
-      // Рисуем изображение собаки
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
 
@@ -164,7 +156,7 @@
         if (clouds.every(cloud => Math.abs(cloud.x - newCloud.x) > 100)) {
           clouds.push(newCloud);
         } else {
-          i--; // Повторяем попытку, если облака слишком близко
+          i--;
         }
       }
     }
@@ -177,9 +169,8 @@
 
     function updateClouds() {
       clouds.forEach(cloud => {
-        cloud.x -= passiveBackwardSpeed * 0.4; // Движение облаков влево
+        cloud.x -= passiveBackwardSpeed * 0.4;
         if (cloud.x + cloud.size < 0) {
-          // Перемещаем облако за правый край с новыми параметрами
           cloud.x = canvas.width + Math.random() * 100;
           cloud.y = Math.random() * 50 + 20;
           cloud.size = Math.random() * 40 + 80;
@@ -193,10 +184,10 @@
       const treeSpacing = 200;
       for (let i = 0; i < canvas.width / treeSpacing + 2; i++) {
         const newTree = {
-          x: i * treeSpacing + Math.random() * 50, // Немного рандомизации позиции
-          y: groundLevel - obstacleHeight - 10, // На уровне препятствий, но немного ниже для фона
+          x: i * treeSpacing + Math.random() * 50,
+          y: groundLevel - 80,
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
-          size: Math.random() * 30 + 70 // Увеличенный размер дерева
+          size: Math.random() * 30 + 70
         };
         trees.push(newTree);
       }
@@ -210,9 +201,9 @@
 
     function updateTrees() {
       trees.forEach(tree => {
-        tree.x -= passiveBackwardSpeed * 0.8; // Медленное движение деревьев влево
+        tree.x -= passiveBackwardSpeed * 0.8;
         if (tree.x + tree.size < 0) {
-          tree.x = canvas.width + Math.random() * 100; // Перемещаем дерево за экран
+          tree.x = canvas.width + Math.random() * 100;
           tree.image = treeImages[Math.floor(Math.random() * treeImages.length)];
           tree.size = Math.random() * 30 + 70;
         }
@@ -220,35 +211,34 @@
     }
 
     function drawBackground() {
-      // Рисуем бесконечный фон
-      ctx.fillStyle = '#87CEEB'; // Небо
+      ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#228B22'; // Земля
+      ctx.fillStyle = '#228B22';
       ctx.fillRect(0, 170, canvas.width, 30);
 
-      drawTrees(); // Рисуем деревья
-      drawClouds(); // Рисуем облака
+      drawTrees();
+      drawClouds();
     }
 
     function createObstacle() {
-      const x = canvas.width + Math.random() * 300; // Появляются за пределами экрана
-      const y = groundLevel - obstacleHeight / 2; // Устанавливаем препятствия на уровне лап собаки
+      const x = canvas.width + Math.random() * 300;
+      const y = groundLevel - obstacleHeight / 2;
+      trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
       obstacles.push({ x, y });
     }
 
     function drawObstacles() {
       obstacles.forEach(obstacle => {
-        // Рисуем изображение препятствия
         ctx.drawImage(poopImage, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
       });
     }
 
     function updateObstacles() {
       obstacles.forEach((obstacle, index) => {
-        obstacle.x -= obstacleSpeed; // Движение влево
+        obstacle.x -= obstacleSpeed;
         if (obstacle.x + obstacleWidth < 0) {
-          obstacles.splice(index, 1); // Удаление препятствий за экраном
+          obstacles.splice(index, 1);
         }
       });
     }
@@ -268,7 +258,7 @@
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space') {
         if (!isMoving) {
-          isMoving = true; // Игра начинается
+          isMoving = true;
         }
         if (!isJumping) {
           isJumping = true;
@@ -278,23 +268,20 @@
       }
     });
 
-    setInterval(createObstacle, 3000); // Генерация препятствий каждые 3 секунды
+    setInterval(createObstacle, 3000);
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isMoving) {
-        // Вертикальное движение собаки
         if (isJumping) {
           dogY += dogVerticalSpeed;
           dogVerticalSpeed += gravity;
 
-          // Движение собаки вправо, пока она не достигнет 75% ширины экрана
           if (dogX + 40 < canvas.width * 0.85) {
-            dogX += 1.8; // Движение вправо
+            dogX += 1.8;
           }
 
-          // Фон движется во время прыжков
           backgroundX += passiveBackwardSpeed;
 
           if (dogY >= groundLevel) {
@@ -303,24 +290,22 @@
             dogVerticalSpeed = 0;
           }
         } else {
-          // Смещение фона, если собака стоит на земле
           backgroundX += passiveBackwardSpeed;
         }
 
-        // Пассивное движение собаки назад
         if (!isJumping && dogX > 50) {
           dogX -= passiveBackwardSpeed;
         }
 
-        updateClouds(); // Обновление положения облаков
-        updateTrees(); // Обновление положения деревьев
-        updateObstacles(); // Обновление положения препятствий
-        checkCollision(); // Проверка столкновений
+        updateClouds();
+        updateTrees();
+        updateObstacles();
+        checkCollision();
       }
 
-      drawBackground(); // Рисуем фон
-      drawDog(); // Рисуем собаку
-      drawObstacles(); // Рисуем препятствия
+      drawBackground();
+      drawDog();
+      drawObstacles();
 
       requestAnimationFrame(update);
     }
