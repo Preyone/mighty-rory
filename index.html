@@ -58,7 +58,7 @@
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
-    let dogY = 248; 
+    let dogY = 248;
     let backgroundX = 0;
     let isJumping = false;
     let isMoving = false;
@@ -66,13 +66,13 @@
     const gravity = 0.2;
     const jumpStrength = -7;
     const passiveBackwardSpeed = 0.6;
-    const groundLevel = 248; 
+    const groundLevel = 248;
     let animationFrame = 0;
 
     let obstacles = [];
     const obstacleWidth = 40;
     const obstacleHeight = 44;
-    const obstacleSpeed = passiveBackwardSpeed * 1.5;
+    const obstacleSpeed = passiveBackwardSpeed * 1.2; // Снижаем скорость
 
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
@@ -118,17 +118,24 @@
 
     let clouds = [];
     let trees = [];
+    let gameIsActive = false; // Добавляем переменную для отслеживания состояния игры
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
+      gameIsActive = true; // Активируем игру при запуске
       update();
     });
 
     infoButton.addEventListener('click', () => {
       alert('Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
+    });
+
+    // Обработчики событий для отслеживания видимости вкладки
+    document.addEventListener('visibilitychange', () => {
+      gameIsActive = document.visibilityState === 'visible';
     });
 
     function drawDog() {
@@ -145,7 +152,7 @@
           }
         }
       } else {
-        frame = dogFrames[0]; 
+        frame = dogFrames[0];
       }
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
@@ -194,7 +201,7 @@
           y: groundLevel - 70,
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
           // Увеличиваем базовый размер в 1.5 раза
-          size: Math.random() * 45 + 105  
+          size: Math.random() * 45 + 105
         };
         if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
           trees.push(newTree);
@@ -226,20 +233,22 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawTrees(); 
+      drawTrees();
 
       for (let x = 0; x < canvas.width; x += 42) {
         ctx.drawImage(landImage, x, groundLevel, 42, 52);
       }
 
-      drawClouds(); 
+      drawClouds();
     }
 
     function createObstacle() {
-      const x = canvas.width + Math.random() * 300;
-      const y = groundLevel - obstacleHeight / 2;
-      trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
-      obstacles.push({ x, y });
+      if (gameIsActive) { // Создаем препятствия только если игра активна
+        const x = canvas.width + Math.random() * 300;
+        const y = groundLevel - obstacleHeight / 2;
+        trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
+        obstacles.push({ x, y });
+      }
     }
 
     function drawObstacles() {
@@ -269,7 +278,7 @@
       });
     }
 
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
       if (event.code === 'Space') {
         if (!isMoving) {
           isMoving = true;
