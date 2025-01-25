@@ -68,7 +68,7 @@
     const groundLevel = 248;
     let animationFrame = 0;
     let frameCounter = 0;
-    const frameDelay = 10;
+    const frameDelay = 15;
 
     let obstacles = [];
     const obstacleWidth = 40;
@@ -176,7 +176,7 @@
       const treeSpacing = 200;
       trees = Array.from({ length: Math.ceil(canvas.width / treeSpacing) + 2 }, (_, i) => ({
         x: i * treeSpacing + Math.random() * 50,
-        y: groundLevel - Math.random() * 20 - 70,
+        y: groundLevel - Math.random() * 30 - 90,
         size: Math.random() * 45 + 105,
         image: loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)]
       }));
