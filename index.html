@@ -70,7 +70,6 @@
     let animationFrame = 0;
     let jumpStartX = 0; // Добавляем переменную для хранения координаты X в начале прыжка
 
-
     let obstacles = [];
     const obstacleWidth = 40;
     const obstacleHeight = 44;
@@ -81,6 +80,9 @@
 
     const landImage = new Image();
     landImage.src = './assets/land.png';
+
+    const heartImage = new Image(); // Добавляем картинку сердечка
+    heartImage.src = './assets/heart.png'; 
 
     const dogFrames = [
       './assets/dog_run_1.png',
@@ -122,6 +124,8 @@
     let trees = [];
     let gameIsActive = false; // Добавляем переменную для отслеживания состояния игры
     let score = 0; // Добавляем переменную для счета
+    let lives = 3; // Добавляем переменную для жизней
+
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
@@ -130,6 +134,7 @@
       generateTrees();
       gameIsActive = true; // Активируем игру при запуске
       score = 0; // Обнуляем счет при запуске игры
+      lives = 3; // Восстанавливаем жизни при запуске игры
       update();
     });
 
@@ -266,7 +271,6 @@
         obstacle.x -= obstacleSpeed;
         if (obstacle.x + obstacleWidth < 0) {
           obstacles.splice(index, 1);
-          // score++; // Увеличиваем счет, когда препятствие уходит за экран - убрали отсюда
         }
       });
     }
@@ -282,6 +286,13 @@
           console.log('Собака перепрыгнула препятствие!');
           score++;
           obstacle.scored = true; // Отмечаем препятствие как перепрыгнутое
+
+          lives--; // Уменьшаем количество жизней
+
+          if (lives === 0) {
+            console.log('Игра окончена!');
+            gameIsActive = false; // Останавливаем игру
+          }
         }
       });
     }
@@ -306,6 +317,17 @@
       ctx.font = "20px Arial";
       ctx.fillStyle = "black";
       ctx.fillText("Счет: " + score, 10, 30); 
+    }
+
+    function drawLives() {
+      const heartSize = 30; // Размер сердечка
+      const padding = 10; // Отступ между сердечками
+      let x = canvas.width - heartSize - padding; // Начальная позиция по X
+
+      for (let i = 0; i < lives; i++) {
+        ctx.drawImage(heartImage, x, padding, heartSize, heartSize);
+        x -= heartSize + padding; 
+      }
     }
 
     function update() {
@@ -345,6 +367,7 @@
       drawDog();
       drawObstacles();
       drawScore(); // Отображаем счет
+      drawLives(); // Отображаем жизни
 
       requestAnimationFrame(update);
     }
