@@ -264,7 +264,6 @@
         obstacle.x -= obstacleSpeed;
         if (obstacle.x + obstacleWidth < 0) {
           obstacles.splice(index, 1);
-          // score++; // Увеличиваем счет, когда препятствие уходит за экран - убрали отсюда
         }
       });
     }
@@ -274,8 +273,9 @@
         if (
           dogX + 40 > obstacle.x &&
           dogX < obstacle.x + obstacleWidth &&
-          dogY + 20 > obstacle.y &&
-          !obstacle.scored // Проверяем, засчитан ли уже этот объект
+          dogY + 20 > obstacle.y && // Проверяем столкновение
+          dogY < obstacle.y && // Проверяем, что собака выше препятствия
+          !obstacle.scored 
         ) {
           console.log('Собака перепрыгнула препятствие!');
           score++;
