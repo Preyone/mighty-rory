@@ -274,16 +274,14 @@
     function checkCollision() {
       obstacles.forEach((obstacle, index) => {
         if (
-          dogX + 40 > obstacle.x &&
-          dogX < obstacle.x + obstacleWidth &&
-          dogY + 20 > obstacle.y &&
-          !obstacle.scored
+          dogX + 40 > obstacle.x && // Собака проходит перед препятствием
+          dogX < obstacle.x + obstacleWidth && // Собака еще не вышла за препятствие
+          dogY + 20 < obstacle.y && // Собака находится выше препятствия
+          !obstacle.scored // Препятствие еще не учтено
         ) {
-          if (jumpStartX < obstacle.x && dogX > obstacle.x) { // Убираем !isJumping
-            console.log('Собака перепрыгнула препятствие!');
-            score++;
-            obstacle.scored = true;
-          }
+          console.log('Собака перепрыгнула препятствие!');
+          score++;
+          obstacle.scored = true; // Отмечаем препятствие как перепрыгнутое
         }
       });
     }
