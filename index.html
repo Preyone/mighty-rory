@@ -10,17 +10,24 @@
     }
 
     canvas {
-      /*  display: none;  Убираем, чтобы canvas был виден */
       margin: 50px auto;
     }
 
-    #startScreen {
+    #startScreen, #gameOverScreen { /* Стили для экранов */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       background-color: #87CEEB;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    #gameOverScreen {
+      display: none; /* Изначально скрываем экран Game Over */
     }
 
     button {
@@ -48,13 +55,21 @@
     <button id="infoButton">Информация</button>
   </div>
 
+  <div id="gameOverScreen"> 
+    <h1>Игра окончена!</h1>
+    <h2>Рори наелся какашек :(</h2>
+    <button id="restartGame">Начать сначала</button> 
+  </div>
+
   <canvas id="gameCanvas" width="1000" height="300"></canvas>
 
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const startScreen = document.getElementById('startScreen');
+    const gameOverScreen = document.getElementById('gameOverScreen'); // Получаем экран Game Over
     const startGameButton = document.getElementById('startGame');
+    const restartGameButton = document.getElementById('restartGame'); // Получаем кнопку "Начать сначала"
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
@@ -127,16 +142,25 @@
     let lives = 3; // Добавляем переменную для жизней
 
 
-    startGameButton.addEventListener('click', () => {
+    startGameButton.addEventListener('click', startGame); // Используем функцию startGame
+    restartGameButton.addEventListener('click', startGame); // Используем ту же функцию для рестарта
+
+    function startGame() { // Функция для запуска/рестарта игры
       startScreen.style.display = 'none';
+      gameOverScreen.style.display = 'none'; // Скрываем экран Game Over
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
-      gameIsActive = true; // Активируем игру при запуске
-      score = 0; // Обнуляем счет при запуске игры
-      lives = 3; // Восстанавливаем жизни при запуске игры
+      gameIsActive = true; 
+      score = 0; 
+      lives = 3; 
+      dogX = 50; // Сбрасываем позицию собаки
+      dogY = groundLevel; // Сбрасываем позицию собаки
+      isJumping = false; // Сбрасываем состояние прыжка
+      isMoving = false; // Сбрасываем состояние движения
+      obstacles = []; // Очищаем препятствия
       update();
-    });
+    }
 
     infoButton.addEventListener('click', () => {
       alert('Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
@@ -278,21 +302,6 @@
     function checkCollision() {
       obstacles.forEach((obstacle, index) => {
         if (
-          dogX + 40 > obstacle.x &&
-          dogX < obstacle.x + obstacleWidth &&
-          dogY + 20 > obstacle.y && // Проверяем столкновение
-          !obstacle.scored 
-        ) {
-          lives--; // Уменьшаем жизнь при столкновении
-          obstacle.scored = true; // Отмечаем препятствие, чтобы не отнимать жизнь повторно
-
-          if (lives === 0) {
-            console.log('Игра окончена!');
-            gameIsActive = false; // Останавливаем игру
-          }
-        }
-
-        if ( // Проверка на перепрыгивание
           dogX + 40 > obstacle.x && 
           dogX < obstacle.x + obstacleWidth && 
           dogY + 20 < obstacle.y && 
@@ -301,7 +310,21 @@
           console.log('Собака перепрыгнула препятствие!');
           score++;
           obstacle.scored = true; 
-        } 
+        } else if ( // Проверка на столкновение
+          dogX + 40 > obstacle.x &&
+          dogX < obstacle.x + obstacleWidth &&
+          dogY + 20 > obstacle.y &&
+          !obstacle.scored
+        ) {
+          lives--; // Уменьшаем жизни при столкновении
+          obstacle.scored = true; // Отмечаем препятствие, чтобы не отнимать жизнь повторно
+
+          if (lives === 0) { // Проверяем, остались ли жизни
+            console.log('Игра окончена!');
+            gameIsActive = false; // Останавливаем игру
+            gameOverScreen.style.display = 'flex'; // Показываем экран Game Over
+          }
+        }
       });
     }
 
