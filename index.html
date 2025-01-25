@@ -269,20 +269,20 @@
     }
 
     function checkCollision() {
-      obstacles.forEach((obstacle, index) => {
-        if (
-          dogX + 40 > obstacle.x &&
-          dogX < obstacle.x + obstacleWidth &&
-          dogY + 20 > obstacle.y && // Проверяем столкновение
-          dogY < obstacle.y && // Проверяем, что собака выше препятствия
-          !obstacle.scored 
-        ) {
-          console.log('Собака перепрыгнула препятствие!');
-          score++;
-          obstacle.scored = true; // Помечаем объект как засчитанный
-        }
-      });
+  obstacles.forEach((obstacle, index) => {
+    if (
+      dogX + 40 > obstacle.x &&
+      dogX < obstacle.x + obstacleWidth &&
+      dogY + 20 > obstacle.y && // Проверяем столкновение
+      dogY + 10 < obstacle.y && // Проверяем, что собака выше препятствия (с запасом)
+      !obstacle.scored 
+    ) {
+      console.log('Собака перепрыгнула препятствие!');
+      score++;
+      obstacle.scored = true; // Помечаем объект как засчитанный
     }
+  });
+}
 
     document.addEventListener('keydown', function(event) {
       if (event.code === 'Space') {
