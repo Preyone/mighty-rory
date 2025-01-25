@@ -176,7 +176,7 @@
       const treeSpacing = 200;
       trees = Array.from({ length: Math.ceil(canvas.width / treeSpacing) + 2 }, (_, i) => ({
         x: i * treeSpacing + Math.random() * 50,
-        y: groundLevel - 70,
+        y: groundLevel - 80,
         size: Math.random() * 45 + 105,
         image: loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)]
       }));
