@@ -10,7 +10,6 @@
     }
 
     canvas {
-      /*  display: none;  Убираем, чтобы canvas был виден */
       margin: 50px auto;
     }
 
@@ -58,7 +57,7 @@
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
-    let dogY = 248; 
+    let dogY = 248;
     let backgroundX = 0;
     let isJumping = false;
     let isMoving = false;
@@ -66,7 +65,7 @@
     const gravity = 0.2;
     const jumpStrength = -7;
     const passiveBackwardSpeed = 0.6;
-    const groundLevel = 248; 
+    const groundLevel = 248;
     let animationFrame = 0;
 
     let obstacles = [];
@@ -74,47 +73,41 @@
     const obstacleHeight = 44;
     const obstacleSpeed = passiveBackwardSpeed * 1.5;
 
+    const dogFrames = ['./assets/dog_run_1.png', './assets/dog_run_2.png', './assets/dog_run_3.png', './assets/dog_run_4.png', './assets/dog_jump.png'];
+    const loadedDogFrames = [];
+    let framesLoaded = 0;
+
+    dogFrames.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedDogFrames.push(img);
+        framesLoaded++;
+        if (framesLoaded === dogFrames.length) {
+          console.log("Все кадры собаки загружены!");
+        }
+      };
+    });
+
+    const cloudImages = ['./assets/cloud.png', './assets/cloud 2.png', './assets/cloud 3.png', './assets/cloud 4.png'];
+    const loadedCloudImages = cloudImages.map(src => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+
+    const treeImages = ['./assets/tree 1.png', './assets/tree 2.png'];
+    const loadedTreeImages = treeImages.map(src => {
+      const img = new Image();
+      img.src = src;
+      return img;
+    });
+
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
 
     const landImage = new Image();
     landImage.src = './assets/land.png';
-
-    const dogFrames = [
-      './assets/dog_run_1.png',
-      './assets/dog_run_2.png',
-      './assets/dog_run_3.png',
-      './assets/dog_run_4.png',
-      './assets/dog_jump.png'
-    ].map(src => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
-
-    let currentFrame = 0;
-    const frameDelay = 25;
-    let frameCounter = 0;
-
-    const cloudImages = [
-      './assets/cloud.png',
-      './assets/cloud 2.png',
-      './assets/cloud 3.png',
-      './assets/cloud 4.png'
-    ].map(src => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
-
-    const treeImages = [
-      './assets/tree 1.png',
-      './assets/tree 2.png'
-    ].map(src => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
 
     let clouds = [];
     let trees = [];
@@ -124,7 +117,7 @@
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
-      update();
+      update(0);
     });
 
     infoButton.addEventListener('click', () => {
@@ -135,36 +128,24 @@
       let frame;
       if (isMoving) {
         if (isJumping) {
-          frame = dogFrames[4];
+          frame = loadedDogFrames[4];
         } else {
-          frame = dogFrames[currentFrame];
-          frameCounter++;
-          if (frameCounter >= frameDelay) {
-            currentFrame = (currentFrame + 1) % 4;
-            frameCounter = 0;
-          }
+          frame = loadedDogFrames[animationFrame];
+          animationFrame = (animationFrame + 1) % 4;
         }
       } else {
-        frame = dogFrames[0]; 
+        frame = loadedDogFrames[0];
       }
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
 
     function generateClouds() {
-      clouds = [];
-      for (let i = 0; i < 5; i++) {
-        const newCloud = {
-          x: Math.random() * canvas.width,
-          y: Math.random() * 50 + 20,
-          size: Math.random() * 40 + 80,
-          image: cloudImages[Math.floor(Math.random() * cloudImages.length)]
-        };
-        if (clouds.every(cloud => Math.abs(cloud.x - newCloud.x) > 100)) {
-          clouds.push(newCloud);
-        } else {
-          i--;
-        }
-      }
+      clouds = Array.from({ length: 5 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * 50 + 20,
+        size: Math.random() * 40 + 80,
+        image: loadedCloudImages[Math.floor(Math.random() * loadedCloudImages.length)]
+      }));
     }
 
     function drawClouds() {
@@ -180,34 +161,24 @@
           cloud.x = canvas.width + Math.random() * 100;
           cloud.y = Math.random() * 50 + 20;
           cloud.size = Math.random() * 40 + 80;
-          cloud.image = cloudImages[Math.floor(Math.random() * cloudImages.length)];
+          cloud.image = loadedCloudImages[Math.floor(Math.random() * loadedCloudImages.length)];
         }
       });
     }
 
     function generateTrees() {
-      trees = [];
       const treeSpacing = 200;
-      for (let i = 0; i < canvas.width / treeSpacing + 2; i++) {
-        const newTree = {
-          x: i * treeSpacing + Math.random() * 50,
-          y: groundLevel - 70,
-          image: treeImages[Math.floor(Math.random() * treeImages.length)],
-          // Увеличиваем базовый размер в 1.5 раза
-          size: Math.random() * 45 + 105  
-        };
-        if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
-          trees.push(newTree);
-        } else {
-          i--;
-        }
-      }
+      trees = Array.from({ length: Math.ceil(canvas.width / treeSpacing) + 2 }, (_, i) => ({
+        x: i * treeSpacing + Math.random() * 50,
+        y: groundLevel - 70,
+        size: Math.random() * 45 + 105,
+        image: loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)]
+      }));
     }
 
     function drawTrees() {
       trees.forEach(tree => {
-        // Увеличиваем смещение по Y
-        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 5), tree.size, tree.size);
+        ctx.drawImage(tree.image, tree.x, tree.y - tree.size / 2, tree.size, tree.size);
       });
     }
 
@@ -216,8 +187,7 @@
         tree.x -= passiveBackwardSpeed * 0.8;
         if (tree.x + tree.size < 0) {
           tree.x = canvas.width + Math.random() * 100;
-          tree.image = treeImages[Math.floor(Math.random() * treeImages.length)];
-          tree.size = Math.random() * 45 + 105;
+          tree.image = loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)];
         }
       });
     }
@@ -226,20 +196,17 @@
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawTrees(); 
-
+      drawTrees();
       for (let x = 0; x < canvas.width; x += 42) {
         ctx.drawImage(landImage, x, groundLevel, 42, 52);
       }
 
-      drawClouds(); 
+      drawClouds();
     }
 
     function createObstacle() {
       const x = canvas.width + Math.random() * 300;
-      const y = groundLevel - obstacleHeight / 2;
-      trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
-      obstacles.push({ x, y });
+      obstacles.push({ x, y: groundLevel - obstacleHeight / 2 });
     }
 
     function drawObstacles() {
@@ -259,11 +226,10 @@
 
     function checkCollision() {
       obstacles.forEach(obstacle => {
-        if (
-          dogX + 40 > obstacle.x &&
-          dogX < obstacle.x + obstacleWidth &&
-          dogY + 20 > obstacle.y
-        ) {
+        const dx = dogX + 40 - (obstacle.x + obstacleWidth / 2);
+        const dy = dogY + 20 - (obstacle.y + obstacleHeight / 2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 40) {
           console.log('Собака столкнулась с препятствием!');
         }
       });
@@ -284,7 +250,7 @@
 
     setInterval(createObstacle, 3000);
 
-    function update() {
+    function update(timestamp) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isMoving) {
@@ -292,24 +258,18 @@
           dogY += dogVerticalSpeed;
           dogVerticalSpeed += gravity;
 
-          if (dogX + 40 < canvas.width * 0.85) {
-            dogX += 1.8;
-          }
-
+          dogX = Math.min(dogX + 1.8, canvas.width * 0.85);
           backgroundX += passiveBackwardSpeed;
 
           if (dogY >= groundLevel) {
             dogY = groundLevel;
             isJumping = false;
-            dogVerticalSpeed = 0;
           }
         } else {
           backgroundX += passiveBackwardSpeed;
         }
 
-        if (!isJumping && dogX > 50) {
-          dogX -= passiveBackwardSpeed;
-        }
+        dogX = Math.max(dogX - passiveBackwardSpeed, 50);
 
         updateClouds();
         updateTrees();
