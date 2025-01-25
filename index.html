@@ -278,6 +278,21 @@
     function checkCollision() {
       obstacles.forEach((obstacle, index) => {
         if (
+          dogX + 40 > obstacle.x &&
+          dogX < obstacle.x + obstacleWidth &&
+          dogY + 20 > obstacle.y && // Проверяем столкновение
+          !obstacle.scored 
+        ) {
+          lives--; // Уменьшаем жизнь при столкновении
+          obstacle.scored = true; // Отмечаем препятствие, чтобы не отнимать жизнь повторно
+
+          if (lives === 0) {
+            console.log('Игра окончена!');
+            gameIsActive = false; // Останавливаем игру
+          }
+        }
+
+        if ( // Проверка на перепрыгивание
           dogX + 40 > obstacle.x && 
           dogX < obstacle.x + obstacleWidth && 
           dogY + 20 < obstacle.y && 
@@ -287,7 +302,6 @@
           score++;
           obstacle.scored = true; 
         } 
-        // Пока убрал проверку столкновений и уменьшение жизней
       });
     }
 
@@ -318,7 +332,7 @@
       const padding = 10; // Отступ между сердечками
       let x = canvas.width - heartSize - padding; // Начальная позиция по X
 
-      for (let i = 0; i < 3; i++) { // Рисуем 3 сердечка
+      for (let i = 0; i < lives; i++) { // Рисуем lives сердечек
         ctx.drawImage(heartImage, x, padding, heartSize, heartSize);
         x -= heartSize + padding; 
       }
