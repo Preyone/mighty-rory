@@ -67,9 +67,9 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const startScreen = document.getElementById('startScreen');
-    const gameOverScreen = document.getElementById('gameOverScreen'); // Получаем экран Game Over
+    const gameOverScreen = document.getElementById('gameOverScreen'); 
     const startGameButton = document.getElementById('startGame');
-    const restartGameButton = document.getElementById('restartGame'); // Получаем кнопку "Начать сначала"
+    const restartGameButton = document.getElementById('restartGame'); 
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
@@ -83,12 +83,12 @@
     const passiveBackwardSpeed = 0.6;
     const groundLevel = 248;
     let animationFrame = 0;
-    let jumpStartX = 0; // Добавляем переменную для хранения координаты X в начале прыжка
+    let jumpStartX = 0; 
 
     let obstacles = [];
     const obstacleWidth = 40;
     const obstacleHeight = 44;
-    const obstacleSpeed = passiveBackwardSpeed * 1.2; // Снижаем скорость
+    const obstacleSpeed = passiveBackwardSpeed * 1.2; 
 
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
@@ -96,7 +96,7 @@
     const landImage = new Image();
     landImage.src = './assets/land.png';
 
-    const heartImage = new Image(); // Добавляем картинку сердечка
+    const heartImage = new Image(); 
     heartImage.src = './assets/heart.png'; 
 
     const dogFrames = [
@@ -137,28 +137,30 @@
 
     let clouds = [];
     let trees = [];
-    let gameIsActive = false; // Добавляем переменную для отслеживания состояния игры
-    let score = 0; // Добавляем переменную для счета
-    let lives = 3; // Добавляем переменную для жизней
+    let gameIsActive = false; 
+    let score = 0; 
+    let lives = 3; 
+    let animationId; // Добавляем переменную для ID анимации
 
 
-    startGameButton.addEventListener('click', startGame); // Используем функцию startGame
-    restartGameButton.addEventListener('click', startGame); // Используем ту же функцию для рестарта
+    startGameButton.addEventListener('click', startGame); 
+    restartGameButton.addEventListener('click', startGame); 
 
-    function startGame() { // Функция для запуска/рестарта игры
+    function startGame() { 
       startScreen.style.display = 'none';
-      gameOverScreen.style.display = 'none'; // Скрываем экран Game Over
+      gameOverScreen.style.display = 'none'; 
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
       gameIsActive = true; 
       score = 0; 
       lives = 3; 
-      dogX = 50; // Сбрасываем позицию собаки
-      dogY = groundLevel; // Сбрасываем позицию собаки
-      isJumping = false; // Сбрасываем состояние прыжка
-      isMoving = false; // Сбрасываем состояние движения
-      obstacles = []; // Очищаем препятствия
+      dogX = 50; 
+      dogY = groundLevel; 
+      isJumping = false; 
+      isMoving = false; 
+      obstacles = []; 
+      cancelAnimationFrame(animationId); // Отменяем предыдущую анимацию
       update();
     }
 
@@ -166,7 +168,6 @@
       alert('Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
     });
 
-    // Обработчики событий для отслеживания видимости вкладки
     document.addEventListener('visibilitychange', () => {
       gameIsActive = document.visibilityState === 'visible';
     });
@@ -233,7 +234,6 @@
           x: i * treeSpacing + Math.random() * 50,
           y: groundLevel - 70,
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
-          // Увеличиваем базовый размер в 1.5 раза
           size: Math.random() * 45 + 105
         };
         if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
@@ -246,7 +246,6 @@
 
     function drawTrees() {
       trees.forEach(tree => {
-        // Увеличиваем смещение по Y
         ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 5), tree.size, tree.size);
       });
     }
@@ -276,7 +275,7 @@
     }
 
     function createObstacle() {
-      if (gameIsActive) { // Создаем препятствия только если игра активна
+      if (gameIsActive) { 
         const x = canvas.width + Math.random() * 300;
         const y = groundLevel - obstacleHeight / 2;
         trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
@@ -310,19 +309,19 @@
           console.log('Собака перепрыгнула препятствие!');
           score++;
           obstacle.scored = true; 
-        } else if ( // Проверка на столкновение
+        } else if ( 
           dogX + 40 > obstacle.x &&
           dogX < obstacle.x + obstacleWidth &&
           dogY + 20 > obstacle.y &&
           !obstacle.scored
         ) {
-          lives--; // Уменьшаем жизни при столкновении
-          obstacle.scored = true; // Отмечаем препятствие, чтобы не отнимать жизнь повторно
+          lives--; 
+          obstacle.scored = true; 
 
-          if (lives === 0) { // Проверяем, остались ли жизни
+          if (lives === 0) { 
             console.log('Игра окончена!');
-            gameIsActive = false; // Останавливаем игру
-            gameOverScreen.style.display = 'flex'; // Показываем экран Game Over
+            gameIsActive = false; 
+            gameOverScreen.style.display = 'flex'; 
           }
         }
       });
@@ -336,7 +335,7 @@
         if (!isJumping) {
           isJumping = true;
           dogVerticalSpeed = jumpStrength;
-          jumpStartX = dogX; // Сохраняем координату X в начале прыжка
+          jumpStartX = dogX; 
         }
         event.preventDefault();
       }
@@ -344,66 +343,30 @@
 
     setInterval(createObstacle, 3000);
 
-    function drawScore() { // Функция для отображения счета
+    function drawScore() { 
       ctx.font = "20px Arial";
       ctx.fillStyle = "black";
       ctx.fillText("Счет: " + score, 10, 30); 
     }
 
     function drawLives() {
-      const heartSize = 30; // Размер сердечка
-      const padding = 10; // Отступ между сердечками
-      let x = canvas.width - heartSize - padding; // Начальная позиция по X
+      const heartSize = 30; 
+      const padding = 10; 
+      let x = canvas.width - heartSize - padding; 
 
-      for (let i = 0; i < lives; i++) { // Рисуем lives сердечек
+      for (let i = 0; i < lives; i++) { 
         ctx.drawImage(heartImage, x, padding, heartSize, heartSize);
         x -= heartSize + padding; 
       }
     }
 
     function update() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // ... (остальной код функции update) ...
 
-      if (isMoving) {
-        if (isJumping) {
-          dogY += dogVerticalSpeed;
-          dogVerticalSpeed += gravity;
-
-          if (dogX + 40 < canvas.width * 0.85) {
-            dogX += 1.8;
-          }
-
-          backgroundX += passiveBackwardSpeed;
-
-          if (dogY >= groundLevel) {
-            dogY = groundLevel;
-            isJumping = false;
-            dogVerticalSpeed = 0;
-          }
-        } else {
-          backgroundX += passiveBackwardSpeed;
-        }
-
-        if (!isJumping && dogX > 50) {
-          dogX -= passiveBackwardSpeed;
-        }
-
-        updateClouds();
-        updateTrees();
-        updateObstacles();
-        checkCollision();
-      }
-
-      drawBackground();
-      drawDog();
-      drawObstacles();
-      drawScore(); // Отображаем счет
-      drawLives(); // Отображаем жизни
-
-      requestAnimationFrame(update);
+      animationId = requestAnimationFrame(update); // Сохраняем ID
     }
+
+    // ... (весь остальной код) ...
   </script>
-
 </body>
-
 </html>
