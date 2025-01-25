@@ -279,7 +279,7 @@
           dogY + 20 > obstacle.y &&
           !obstacle.scored
         ) {
-          if (!isJumping && jumpStartX < obstacle.x && dogX > obstacle.x) { // Проверяем дистанцию
+          if (jumpStartX < obstacle.x && dogX > obstacle.x) { // Убираем !isJumping
             console.log('Собака перепрыгнула препятствие!');
             score++;
             obstacle.scored = true;
