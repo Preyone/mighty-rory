@@ -119,6 +119,7 @@
     let clouds = [];
     let trees = [];
     let gameIsActive = false; // Добавляем переменную для отслеживания состояния игры
+    let score = 0; // Добавляем переменную для счета
 
     startGameButton.addEventListener('click', () => {
       startScreen.style.display = 'none';
@@ -126,6 +127,7 @@
       generateClouds();
       generateTrees();
       gameIsActive = true; // Активируем игру при запуске
+      score = 0; // Обнуляем счет при запуске игры
       update();
     });
 
@@ -262,6 +264,7 @@
         obstacle.x -= obstacleSpeed;
         if (obstacle.x + obstacleWidth < 0) {
           obstacles.splice(index, 1);
+          score++; // Увеличиваем счет, когда препятствие уходит за экран
         }
       });
     }
@@ -292,6 +295,12 @@
     });
 
     setInterval(createObstacle, 3000);
+
+    function drawScore() { // Функция для отображения счета
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText("Счет: " + score, 10, 30); 
+    }
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -329,6 +338,7 @@
       drawBackground();
       drawDog();
       drawObstacles();
+      drawScore(); // Отображаем счет
 
       requestAnimationFrame(update);
     }
