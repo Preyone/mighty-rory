@@ -67,6 +67,8 @@
     const passiveBackwardSpeed = 0.6;
     const groundLevel = 248;
     let animationFrame = 0;
+    let frameCounter = 0;
+    const frameDelay = 10;
 
     let obstacles = [];
     const obstacleWidth = 40;
@@ -130,8 +132,12 @@
         if (isJumping) {
           frame = loadedDogFrames[4];
         } else {
+          frameCounter++;
+          if (frameCounter >= frameDelay) {
+            animationFrame = (animationFrame + 1) % 4;
+            frameCounter = 0;
+          }
           frame = loadedDogFrames[animationFrame];
-          animationFrame = (animationFrame + 1) % 4;
         }
       } else {
         frame = loadedDogFrames[0];
@@ -170,7 +176,7 @@
       const treeSpacing = 200;
       trees = Array.from({ length: Math.ceil(canvas.width / treeSpacing) + 2 }, (_, i) => ({
         x: i * treeSpacing + Math.random() * 50,
-        y: groundLevel - 70,
+        y: groundLevel - Math.random() * 20 - 70,
         size: Math.random() * 45 + 105,
         image: loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)]
       }));
@@ -178,7 +184,7 @@
 
     function drawTrees() {
       trees.forEach(tree => {
-        ctx.drawImage(tree.image, tree.x, tree.y - tree.size / 2, tree.size, tree.size);
+        ctx.drawImage(tree.image, tree.x, tree.y, tree.size, tree.size);
       });
     }
 
@@ -187,6 +193,7 @@
         tree.x -= passiveBackwardSpeed * 0.8;
         if (tree.x + tree.size < 0) {
           tree.x = canvas.width + Math.random() * 100;
+          tree.y = groundLevel - Math.random() * 20 - 70;
           tree.image = loadedTreeImages[Math.floor(Math.random() * loadedTreeImages.length)];
         }
       });
