@@ -249,7 +249,7 @@
         const x = canvas.width + Math.random() * 300;
         const y = groundLevel - obstacleHeight / 2;
         trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
-        obstacles.push({ x, y, scored: false }); // Добавляем свойство scored
+        obstacles.push({ x, y, scored: false, passed: false }); // Добавляем свойство passed
       }
     }
 
@@ -262,27 +262,27 @@
     function updateObstacles() {
       obstacles.forEach((obstacle, index) => {
         obstacle.x -= obstacleSpeed;
-        if (obstacle.x + obstacleWidth < 0) {
+        if (obstacle.x + obstacleWidth < 0 && obstacle.passed) { // Проверяем passed
           obstacles.splice(index, 1);
+          score++; 
         }
       });
     }
 
     function checkCollision() {
-  obstacles.forEach((obstacle, index) => {
-    if (
-      dogX + 40 > obstacle.x &&
-      dogX < obstacle.x + obstacleWidth &&
-      dogY + 20 > obstacle.y && // Проверяем столкновение
-      dogY + 10 < obstacle.y && // Проверяем, что собака выше препятствия (с запасом)
-      !obstacle.scored 
-    ) {
-      console.log('Собака перепрыгнула препятствие!');
-      score++;
-      obstacle.scored = true; // Помечаем объект как засчитанный
+      obstacles.forEach((obstacle, index) => {
+        if (
+          dogX + 40 > obstacle.x &&
+          dogX < obstacle.x + obstacleWidth &&
+          dogY + 20 > obstacle.y && 
+          !obstacle.scored 
+        ) {
+          if (dogX < obstacle.x && !obstacle.passed) {  // Проверяем, была ли собака перед препятствием
+            obstacle.passed = true; 
+          }
+        }
+      });
     }
-  });
-}
 
     document.addEventListener('keydown', function(event) {
       if (event.code === 'Space') {
