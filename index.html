@@ -140,7 +140,7 @@
     let gameIsActive = false; 
     let score = 0; 
     let lives = 3; 
-    let animationId; // Добавляем переменную для ID анимации
+    let animationId; // Объявляем animationId здесь
 
 
     startGameButton.addEventListener('click', startGame); 
@@ -361,12 +361,49 @@
     }
 
     function update() {
-      // ... (остальной код функции update) ...
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (isMoving) {
+        if (isJumping) {
+          dogY += dogVerticalSpeed;
+          dogVerticalSpeed += gravity;
+
+          if (dogX + 40 < canvas.width * 0.85) {
+            dogX += 1.8;
+          }
+
+          backgroundX += passiveBackwardSpeed;
+
+          if (dogY >= groundLevel) {
+            dogY = groundLevel;
+            isJumping = false;
+            dogVerticalSpeed = 0;
+          }
+        } else {
+          backgroundX += passiveBackwardSpeed;
+        }
+
+        if (!isJumping && dogX > 50) {
+          dogX -= passiveBackwardSpeed;
+        }
+
+        updateClouds();
+        updateTrees();
+        updateObstacles();
+        checkCollision();
+      }
+
+      drawBackground();
+      drawDog();
+      drawObstacles();
+      drawScore(); 
+      drawLives(); 
 
       animationId = requestAnimationFrame(update); // Сохраняем ID
     }
 
-    // ... (весь остальной код) ...
   </script>
+
 </body>
+
 </html>
