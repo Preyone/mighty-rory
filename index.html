@@ -15,8 +15,7 @@
 
     #startScreen,
     #gameOverScreen,
-    #winScreen { 
-      /* Стили для экранов */
+    #winScreen {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -27,7 +26,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      display: none; /* Изначально скрываем экраны */
+      display: none;
     }
 
     button {
@@ -74,10 +73,10 @@
     const ctx = canvas.getContext('2d');
     const startScreen = document.getElementById('startScreen');
     const gameOverScreen = document.getElementById('gameOverScreen');
-    const winScreen = document.getElementById('winScreen'); 
+    const winScreen = document.getElementById('winScreen');
     const startGameButton = document.getElementById('startGame');
     const restartGameButton = document.getElementById('restartGame');
-    const restartGameWinButton = document.getElementById('restartGameWin'); 
+    const restartGameWinButton = document.getElementById('restartGameWin');
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
@@ -149,29 +148,9 @@
     let lives = 3;
     let animationId;
 
-
     startGameButton.addEventListener('click', startGame);
     restartGameButton.addEventListener('click', startGame);
-    restartGameWinButton.addEventListener('click', startGame); 
-
-    function startGame() {
-      startScreen.style.display = 'none';
-      gameOverScreen.style.display = 'none'; 
-      winScreen.style.display = 'none';  
-      canvas.style.display = 'block';
-      generateClouds();
-      generateTrees();
-      gameIsActive = true;
-      score = 0;
-      lives = 3;
-      dogX = 50;
-      dogY = groundLevel;
-      isJumping = false;
-      obstacles = [];
-      cancelAnimationFrame(animationId);
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // <-- Очищаем canvas
-      update();
-    }
+    restartGameWinButton.addEventListener('click', startGame);
 
     infoButton.addEventListener('click', () => {
       alert('Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
@@ -180,6 +159,36 @@
     document.addEventListener('visibilitychange', () => {
       gameIsActive = document.visibilityState === 'visible';
     });
+
+    function resetGame() {
+      startScreen.style.display = 'flex';
+      gameOverScreen.style.display = 'none';
+      winScreen.style.display = 'none';
+      canvas.style.display = 'none';
+      gameIsActive = false;
+      cancelAnimationFrame(animationId);
+    }
+
+    function startGame() {
+      startScreen.style.display = 'none';
+      gameOverScreen.style.display = 'none';
+      winScreen.style.display = 'none';
+      canvas.style.display = 'block';
+
+      gameIsActive = true;
+      score = 0;
+      lives = 3;
+      dogX = 50;
+      dogY = groundLevel;
+      isJumping = false;
+      obstacles = [];
+
+      generateClouds();
+      generateTrees();
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      update();
+    }
 
     function drawDog() {
       let frame;
@@ -205,11 +214,7 @@
           size: Math.random() * 40 + 80,
           image: cloudImages[Math.floor(Math.random() * cloudImages.length)]
         };
-        if (clouds.every(cloud => Math.abs(cloud.x - newCloud.x) > 100)) {
-          clouds.push(newCloud);
-        } else {
-          i--;
-        }
+        clouds.push(newCloud);
       }
     }
 
@@ -241,17 +246,13 @@
           image: treeImages[Math.floor(Math.random() * treeImages.length)],
           size: Math.random() * 45 + 105
         };
-        if (trees.every(tree => Math.abs(tree.x - newTree.x) > 50)) {
-          trees.push(newTree);
-        } else {
-          i--;
-        }
+        trees.push(newTree);
       }
     }
 
     function drawTrees() {
       trees.forEach(tree => {
-        ctx.drawImage(tree.image, tree.x, (((groundLevel - tree.size + 25)) + 5), tree.size, tree.size);
+        ctx.drawImage(tree.image, tree.x, groundLevel - tree.size + 25, tree.size, tree.size);
       });
     }
 
@@ -283,8 +284,7 @@
       if (gameIsActive) {
         const x = canvas.width + Math.random() * 300;
         const y = groundLevel - obstacleHeight / 2;
-        trees = trees.filter(tree => Math.abs(tree.x - x) > 50);
-        obstacles.push({x, y, scored: false});
+        obstacles.push({ x, y, scored: false });
       }
     }
 
@@ -311,7 +311,6 @@
           dogY + 20 < obstacle.y &&
           !obstacle.scored
         ) {
-          console.log('Собака перепрыгнула препятствие!');
           score++;
           obstacle.scored = true;
         } else if (
@@ -324,31 +323,23 @@
           obstacle.scored = true;
 
           if (lives === 0) {
-            console.log('Игра окончена!');
             gameIsActive = false;
             gameOverScreen.style.display = 'flex';
           }
         }
       });
 
-      if (score >= 32) { 
-        console.log('Вы победили!');
+      if (score >= 32) {
         gameIsActive = false;
-
-        // Выводим сообщение на canvas:
-        ctx.font = "30px Arial";
-        ctx.fillStyle = "black";
-        ctx.fillText("Вы победили!", canvas.width / 2 - 100, canvas.height / 2); 
+        winScreen.style.display = 'flex';
       }
     }
 
     document.addEventListener('keydown', function (event) {
-      console.log("Нажата клавиша:", event.code);
       if (event.code === 'Space') {
         if (!isJumping) {
           isJumping = true;
           dogVerticalSpeed = jumpStrength;
-          jumpStartX = dogX;
         }
         event.preventDefault();
       } else if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
@@ -359,7 +350,6 @@
     });
 
     document.addEventListener('keyup', function (event) {
-      console.log("Отпущена клавиша:", event.code);
       if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
         isLeftMovement = false;
       } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
@@ -370,9 +360,9 @@
     setInterval(createObstacle, 3000);
 
     function drawScore() {
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "black";
-      ctx.fillText("Счет: " + score, 10, 30);
+      ctx.font = '20px Arial';
+      ctx.fillStyle = 'black';
+      ctx.fillText('Счет: ' + score, 10, 30);
     }
 
     function drawLives() {
@@ -410,11 +400,11 @@
         if (isLeftMovement) {
           dogX -= passiveBackwardSpeed * 0.8;
         } else if (isRightMovement) {
-          dogX += passiveBackwardSpeed * 1.0; 
+          dogX += passiveBackwardSpeed * 1.0;
         }
 
         if (dogX > 50) {
-          dogX -= passiveBackwardSpeed * 0.4; 
+          dogX -= passiveBackwardSpeed * 0.4;
         }
       }
 
@@ -429,8 +419,12 @@
       drawScore();
       drawLives();
 
-      animationId = requestAnimationFrame(update);
+      if (gameIsActive) {
+        animationId = requestAnimationFrame(update);
+      }
     }
+
+    resetGame();
   </script>
 
 </body>
