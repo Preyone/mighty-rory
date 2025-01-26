@@ -352,11 +352,14 @@
       }
     });
 
+    // Обработчик keyup с isMoving = false:
     document.addEventListener('keyup', function (event) {
       if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
         isLeftMovement = false;
+        isMoving = false; 
       } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
         isRightMovement = false;
+        isMoving = false; 
       }
     });
 
@@ -382,7 +385,6 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Изменено условие:
       if (isMoving && !isLeftMovement && !isRightMovement) { 
         if (isJumping) {
           dogY += dogVerticalSpeed;
