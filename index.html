@@ -14,7 +14,8 @@
     }
 
     #startScreen,
-    #gameOverScreen {
+    #gameOverScreen,
+    #winScreen { 
       /* Стили для экранов */
       display: flex;
       flex-direction: column;
@@ -26,11 +27,7 @@
       top: 0;
       left: 0;
       width: 100%;
-    }
-
-    #gameOverScreen {
-      display: none;
-      /* Изначально скрываем экран Game Over */
+      display: none; /* Изначально скрываем экраны */
     }
 
     button {
@@ -64,6 +61,12 @@
     <button id="restartGame">Начать сначала</button>
   </div>
 
+  <div id="winScreen">
+    <h1>Вы победили!</h1>
+    <h2>Рори доволен :)</h2>
+    <button id="restartGameWin">Начать сначала</button>
+  </div>
+
   <canvas id="gameCanvas" width="1000" height="300"></canvas>
 
   <script>
@@ -71,8 +74,10 @@
     const ctx = canvas.getContext('2d');
     const startScreen = document.getElementById('startScreen');
     const gameOverScreen = document.getElementById('gameOverScreen');
+    const winScreen = document.getElementById('winScreen'); // <-- Получаем ссылку на экран победы
     const startGameButton = document.getElementById('startGame');
     const restartGameButton = document.getElementById('restartGame');
+    const restartGameWinButton = document.getElementById('restartGameWin'); // <-- Получаем ссылку на кнопку
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
@@ -147,10 +152,12 @@
 
     startGameButton.addEventListener('click', startGame);
     restartGameButton.addEventListener('click', startGame);
+    restartGameWinButton.addEventListener('click', startGame); // <-- Добавляем обработчик события
 
     function startGame() {
       startScreen.style.display = 'none';
       gameOverScreen.style.display = 'none';
+      winScreen.style.display = 'none'; // <--  Скрываем экран победы при запуске новой игры
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
@@ -322,6 +329,12 @@
           }
         }
       });
+
+      if (score >= 32) { // <-- Проверка на победу
+        console.log('Вы победили!');
+        gameIsActive = false;
+        winScreen.style.display = 'flex'; // <-- Показываем экран победы
+      }
     }
 
     document.addEventListener('keydown', function (event) {
@@ -392,12 +405,12 @@
         if (isLeftMovement) {
           dogX -= passiveBackwardSpeed * 0.8;
         } else if (isRightMovement) {
-          dogX += passiveBackwardSpeed * 1.0;
-        } 
+          dogX += passiveBackwardSpeed * 1.0; // <--  Скорость движения вправо
+        }
 
-        // Добавляем пассивное движение назад:
+        // Пассивное движение назад:
         if (dogX > 50) {
-          dogX -= passiveBackwardSpeed * 0.4; 
+          dogX -= passiveBackwardSpeed * 0.4; // <--  Скорость пассивного движения назад
         }
       }
 
@@ -414,7 +427,6 @@
 
       animationId = requestAnimationFrame(update);
     }
-
   </script>
 
 </body>
