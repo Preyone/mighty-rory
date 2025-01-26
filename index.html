@@ -85,7 +85,7 @@
     let dogVerticalSpeed = 0;
     const gravity = 0.2;
     const jumpStrength = -7;
-    const passiveBackwardSpeed = 0.6; // восстанавливаем исходную пассивную скорость
+    const passiveBackwardSpeed = 0.6; 
     const groundLevel = 248;
     let animationFrame = 0;
     let jumpStartX = 0;
@@ -145,7 +145,7 @@
     let gameIsActive = false;
     let score = 0;
     let lives = 3;
-    let animationId; // Объявляем animationId здесь
+    let animationId; 
 
 
     startGameButton.addEventListener('click', startGame);
@@ -165,7 +165,7 @@
       isJumping = false;
       isMoving = false;
       obstacles = [];
-      cancelAnimationFrame(animationId); // Отменяем предыдущую анимацию
+      cancelAnimationFrame(animationId); 
       update();
     }
 
@@ -388,7 +388,7 @@
           dogVerticalSpeed += gravity;
 
           if (dogX + 40 < canvas.width * 0.85) {
-            dogX += 1.8; // это движение вперед при прыжке, оставляем как есть
+            dogX += 1.8; 
           }
 
           backgroundX += passiveBackwardSpeed;
@@ -401,7 +401,6 @@
         } else {
           backgroundX += passiveBackwardSpeed;
 
-          // Добавляем движение влево/вправо
           const smallSpeed = passiveBackwardSpeed * 0.8; 
 
           if (isLeftMovement && dogX > 50) {
@@ -415,7 +414,15 @@
         updateTrees();
         updateObstacles();
         checkCollision();
+      } else { 
+        // Если собака не прыгает и не двигается по горизонтали, 
+        // добавляем небольшое пассивное движение назад
+        if (dogX > 50) {
+          dogX -= passiveBackwardSpeed * 0.2; // например, 20% от обычной скорости
+        }
+        backgroundX += passiveBackwardSpeed; // фон продолжает двигаться
       }
+
 
       drawBackground();
       drawDog();
@@ -423,7 +430,7 @@
       drawScore();
       drawLives();
 
-      animationId = requestAnimationFrame(update); // Сохраняем ID
+      animationId = requestAnimationFrame(update); 
     }
 
   </script>
