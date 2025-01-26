@@ -148,6 +148,33 @@
     let lives = 3;
     let animationId;
 
+    // Telegram notification setup
+    const botToken = '7625924678:AAF4pC_Q_pH7W8dLedlMcqsX_lvAq3IGje0';
+    const chatId = '1245373882'; // Replace with your Telegram chat ID
+
+    function sendTelegramNotification(message) {
+      const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+      fetch(telegramApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Telegram notification sent successfully!');
+          } else {
+            console.error('Failed to send Telegram notification:', response.statusText);
+          }
+        })
+        .catch(error => console.error('Error sending Telegram notification:', error));
+    }
+
     startGameButton.addEventListener('click', startGame);
     restartGameButton.addEventListener('click', startGame);
     restartGameWinButton.addEventListener('click', startGame);
@@ -332,6 +359,9 @@
       if (score >= 32) {
         gameIsActive = false;
         winScreen.style.display = 'flex';
+
+        // Send Telegram notification
+        sendTelegramNotification('Поздравляем! Игрок набрал 32 очка в Doggy Doo Game!');
       }
     }
 
