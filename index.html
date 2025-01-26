@@ -79,7 +79,6 @@
     let dogY = 248;
     let backgroundX = 0;
     let isJumping = false;
-    let isMoving = false;
     let isLeftMovement = false;
     let isRightMovement = false;
     let dogVerticalSpeed = 0;
@@ -87,8 +86,6 @@
     const jumpStrength = -7;
     const passiveBackwardSpeed = 0.6;
     const groundLevel = 248;
-    let animationFrame = 0;
-    let jumpStartX = 0;
 
     let obstacles = [];
     const obstacleWidth = 40;
@@ -145,7 +142,7 @@
     let gameIsActive = false;
     let score = 0;
     let lives = 3;
-    let animationId; // Объявляем animationId здесь
+    let animationId;
 
 
     startGameButton.addEventListener('click', startGame);
@@ -163,9 +160,8 @@
       dogX = 50;
       dogY = groundLevel;
       isJumping = false;
-      isMoving = false;
       obstacles = [];
-      cancelAnimationFrame(animationId); // Отменяем предыдущую анимацию
+      cancelAnimationFrame(animationId);
       update();
     }
 
@@ -329,7 +325,7 @@
     }
 
     document.addEventListener('keydown', function (event) {
-      console.log("Нажата клавиша:", event.code); // <-- Вывод в консоль
+      console.log("Нажата клавиша:", event.code);
       if (event.code === 'Space') {
         if (!isJumping) {
           isJumping = true;
@@ -345,7 +341,7 @@
     });
 
     document.addEventListener('keyup', function (event) {
-      console.log("Отпущена клавиша:", event.code); // <-- Вывод в консоль
+      console.log("Отпущена клавиша:", event.code);
       if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
         isLeftMovement = false;
       } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
@@ -376,7 +372,20 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isJumping) {
-        // ... (код для прыжка без изменений) ...
+        dogY += dogVerticalSpeed;
+        dogVerticalSpeed += gravity;
+
+        if (dogX + 40 < canvas.width * 0.85) {
+          dogX += 1.8;
+        }
+
+        backgroundX += passiveBackwardSpeed;
+
+        if (dogY >= groundLevel) {
+          dogY = groundLevel;
+          isJumping = false;
+          dogVerticalSpeed = 0;
+        }
       } else {
         backgroundX += passiveBackwardSpeed;
 
@@ -384,8 +393,11 @@
           dogX -= passiveBackwardSpeed * 0.8;
         } else if (isRightMovement) {
           dogX += passiveBackwardSpeed * 0.8;
-        } else if (dogX > 50) {
-          dogX -= passiveBackwardSpeed * 0.3; // Увеличиваем скорость пассивного движения назад
+        } 
+
+        // Добавляем пассивное движение назад:
+        if (dogX > 50) {
+          dogX -= passiveBackwardSpeed * 0.3; 
         }
       }
 
@@ -402,6 +414,7 @@
 
       animationId = requestAnimationFrame(update);
     }
+
   </script>
 
 </body>
