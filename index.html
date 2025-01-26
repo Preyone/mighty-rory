@@ -85,7 +85,7 @@
     let dogVerticalSpeed = 0;
     const gravity = 0.2;
     const jumpStrength = -7;
-    const passiveBackwardSpeed = 0.3; // уменьшаем пассивную скорость 
+    const passiveBackwardSpeed = 0.6; // восстанавливаем исходную пассивную скорость
     const groundLevel = 248;
     let animationFrame = 0;
     let jumpStartX = 0;
@@ -93,7 +93,7 @@
     let obstacles = [];
     const obstacleWidth = 40;
     const obstacleHeight = 44;
-    const obstacleSpeed = passiveBackwardSpeed * 1.2; // скорость препятствий зависит от пассивной скорости
+    const obstacleSpeed = passiveBackwardSpeed * 1.2;
 
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
@@ -384,12 +384,25 @@
 
       if (isMoving) {
         if (isJumping) {
-          // ... (код для прыжка без изменений) ...
+          dogY += dogVerticalSpeed;
+          dogVerticalSpeed += gravity;
+
+          if (dogX + 40 < canvas.width * 0.85) {
+            dogX += 1.8; // это движение вперед при прыжке, оставляем как есть
+          }
+
+          backgroundX += passiveBackwardSpeed;
+
+          if (dogY >= groundLevel) {
+            dogY = groundLevel;
+            isJumping = false;
+            dogVerticalSpeed = 0;
+          }
         } else {
           backgroundX += passiveBackwardSpeed;
 
-          // Увеличиваем скорость движения влево/вправо
-          const smallSpeed = passiveBackwardSpeed * 0.8; // например, 80% от обычной скорости
+          // Добавляем движение влево/вправо
+          const smallSpeed = passiveBackwardSpeed * 0.8; 
 
           if (isLeftMovement && dogX > 50) {
             dogX -= smallSpeed;
@@ -412,6 +425,7 @@
 
       animationId = requestAnimationFrame(update); // Сохраняем ID
     }
+
   </script>
 
 </body>
