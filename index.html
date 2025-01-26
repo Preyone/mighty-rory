@@ -333,6 +333,7 @@
     }
 
     document.addEventListener('keydown', function (event) {
+      console.log("Нажата клавиша:", event.code); // <-- Вывод в консоль
       if (event.code === 'Space') {
         if (!isMoving) {
           isMoving = true;
@@ -352,14 +353,14 @@
       }
     });
 
-    // Обработчик keyup с isMoving = false:
     document.addEventListener('keyup', function (event) {
+      console.log("Отпущена клавиша:", event.code); // <-- Вывод в консоль
       if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
         isLeftMovement = false;
-        isMoving = false; 
+        isMoving = false;
       } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
         isRightMovement = false;
-        isMoving = false; 
+        isMoving = false;
       }
     });
 
@@ -385,36 +386,38 @@
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (isMoving && !isLeftMovement && !isRightMovement) { 
-        if (isJumping) {
-          dogY += dogVerticalSpeed;
-          dogVerticalSpeed += gravity;
+      // Упрощенная логика update:
+      if (isJumping) {
+        dogY += dogVerticalSpeed;
+        dogVerticalSpeed += gravity;
 
-          if (dogX + 40 < canvas.width * 0.85) {
-            dogX += 1.8; 
-          }
-
-          backgroundX += passiveBackwardSpeed;
-
-          if (dogY >= groundLevel) {
-            dogY = groundLevel;
-            isJumping = false;
-            dogVerticalSpeed = 0;
-          }
-        } else {
-          backgroundX += passiveBackwardSpeed;
+        if (dogX + 40 < canvas.width * 0.85) {
+          dogX += 1.8;
         }
 
-        updateClouds();
-        updateTrees();
-        updateObstacles();
-        checkCollision();
-      } else { 
-        if (dogX > 50) {
-          dogX -= passiveBackwardSpeed * 0.2; 
+        backgroundX += passiveBackwardSpeed;
+
+        if (dogY >= groundLevel) {
+          dogY = groundLevel;
+          isJumping = false;
+          dogVerticalSpeed = 0;
         }
-        backgroundX += passiveBackwardSpeed; 
+      } else {
+        backgroundX += passiveBackwardSpeed;
+
+        if (isLeftMovement) {
+          dogX -= passiveBackwardSpeed * 0.8;
+        } else if (isRightMovement) {
+          dogX += passiveBackwardSpeed * 0.8;
+        } else if (dogX > 50) {
+          dogX -= passiveBackwardSpeed * 0.2;
+        }
       }
+
+      updateClouds();
+      updateTrees();
+      updateObstacles();
+      checkCollision();
 
       drawBackground();
       drawDog();
@@ -422,7 +425,7 @@
       drawScore();
       drawLives();
 
-      animationId = requestAnimationFrame(update); 
+      animationId = requestAnimationFrame(update);
     }
   </script>
 
