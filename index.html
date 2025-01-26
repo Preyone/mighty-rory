@@ -74,10 +74,10 @@
     const ctx = canvas.getContext('2d');
     const startScreen = document.getElementById('startScreen');
     const gameOverScreen = document.getElementById('gameOverScreen');
-    const winScreen = document.getElementById('winScreen'); // <-- Получаем ссылку на экран победы
+    const winScreen = document.getElementById('winScreen'); 
     const startGameButton = document.getElementById('startGame');
     const restartGameButton = document.getElementById('restartGame');
-    const restartGameWinButton = document.getElementById('restartGameWin'); // <-- Получаем ссылку на кнопку
+    const restartGameWinButton = document.getElementById('restartGameWin'); 
     const infoButton = document.getElementById('infoButton');
 
     let dogX = 50;
@@ -152,12 +152,12 @@
 
     startGameButton.addEventListener('click', startGame);
     restartGameButton.addEventListener('click', startGame);
-    restartGameWinButton.addEventListener('click', startGame); // <-- Добавляем обработчик события
+    restartGameWinButton.addEventListener('click', startGame); 
 
     function startGame() {
       startScreen.style.display = 'none';
-      gameOverScreen.style.display = 'none';
-      winScreen.style.display = 'none'; // <--  Скрываем экран победы при запуске новой игры
+      gameOverScreen.style.display = 'none';  // <--  Скрываем экран проигрыша
+      winScreen.style.display = 'none';  
       canvas.style.display = 'block';
       generateClouds();
       generateTrees();
@@ -330,10 +330,10 @@
         }
       });
 
-      if (score >= 32) { // <-- Проверка на победу
+      if (score >= 32) { 
         console.log('Вы победили!');
         gameIsActive = false;
-        winScreen.style.display = 'flex'; // <-- Показываем экран победы
+        winScreen.style.display = 'flex'; 
       }
     }
 
@@ -405,12 +405,11 @@
         if (isLeftMovement) {
           dogX -= passiveBackwardSpeed * 0.8;
         } else if (isRightMovement) {
-          dogX += passiveBackwardSpeed * 1.0; // <--  Скорость движения вправо
+          dogX += passiveBackwardSpeed * 1.0; 
         }
 
-        // Пассивное движение назад:
         if (dogX > 50) {
-          dogX -= passiveBackwardSpeed * 0.4; // <--  Скорость пассивного движения назад
+          dogX -= passiveBackwardSpeed * 0.4; 
         }
       }
 
