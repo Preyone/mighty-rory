@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Doggy Doo Game</title>
+  <title>The Mighty Rory</title>
   <style>
     /* Стили оформления для игры и её интерфейса */
     body {
@@ -62,7 +62,7 @@
 <body>
 
   <div id="startScreen">
-    <h1>Doggy Doo Game</h1>
+    <h1>The Mighty Rory</h1>
     <button id="startGame">Начать игру</button>
     <button id="infoButton">Информация</button>
   </div>
@@ -75,7 +75,7 @@
 
   <div id="winScreen">
     <h1>Поздравляем с победой!</h1>
-    <p>Вы успешно прошли игру Doggy Doo!</p>
+    <p>Вы успешно прошли игру The Mighty Rory!</p>
     <img id="winImage" src="./assets/final.png" alt="Победа!">
     <p>Скоро здесь появится больше деталей о вашей победе...</p>
     <button id="restartGameWin">Начать сначала</button>
@@ -206,7 +206,7 @@
     restartGameWinButton.addEventListener('click', startGame);
 
     infoButton.addEventListener('click', () => {
-      alert('Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
+      alert('Добро пожаловать в The Mighty Rory! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
     });
 
     document.addEventListener('visibilitychange', () => {
@@ -405,7 +405,7 @@
         winScreen.style.display = 'flex';
 
         // Отправляем уведомление в Telegram
-        sendTelegramNotification('Поздравляем! Игрок набрал 32 очка в Doggy Doo Game!');
+        sendTelegramNotification('Поздравляем! Игрок набрал 32 очка в The Mighty Rory!');
       }
     }
 
