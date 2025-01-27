@@ -18,26 +18,29 @@
     #startScreen,
     #gameOverScreen,
     #winScreen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #87CEEB;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #87CEEB;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: none;
+    }
 
     /* Стили для изображения на экране победы */
-    #winImage  #winImage {
-    width: 1024px;   /* Фиксированная ширина */
-    height: 1024px;  /* Фиксированная высота */
-    display: block;   
-    margin: 100px auto; 
-  }
-}
+    #winImage {
+      max-width: 60%; /* Максимальная ширина изображения */
+      max-height: 70%; /* Максимальная высота изображения */
+      display: block;
+      margin: 0 auto; /* Центрирование */
+      object-fit: contain; /* Сохранение пропорций */
+      border: 5px solid white; /* Белая рамка вокруг изображения */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для красоты */
+    }
 
     button {
       padding: 10px 20px;
@@ -71,7 +74,10 @@
   </div>
 
   <div id="winScreen">
-    <img id="winImage" src="./assets/final.png" alt="Победа!"> 
+    <h1>Поздравляем с победой!</h1>
+    <p>Вы успешно прошли игру Doggy Doo!</p>
+    <img id="winImage" src="./assets/final.png" alt="Победа!">
+    <p>Скоро здесь появится больше деталей о вашей победе...</p>
     <button id="restartGameWin">Начать сначала</button>
   </div>
 
@@ -165,6 +171,7 @@
     let score = 0;
     let lives = 3;
     let animationId;
+    let obstacleInterval;
 
     // Настройка Telegram-уведомлений (замените токен и chat_id своими)
     const botToken = '7625924678:AAF4pC_Q_pH7W8dLedlMcqsX_lvAq3IGje0';
@@ -208,6 +215,7 @@
 
     // Функция для сброса состояния игры
     function resetGame() {
+      clearInterval(obstacleInterval);
       startScreen.style.display = 'flex';
       gameOverScreen.style.display = 'none';
       winScreen.style.display = 'none';
@@ -218,6 +226,9 @@
 
     // Запуск игры
     function startGame() {
+      clearInterval(obstacleInterval);
+      obstacleInterval = setInterval(createObstacle, 3000);
+
       startScreen.style.display = 'none';
       gameOverScreen.style.display = 'none';
       winScreen.style.display = 'none';
