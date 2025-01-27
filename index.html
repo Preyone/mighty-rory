@@ -18,18 +18,26 @@
     #startScreen,
     #gameOverScreen,
     #winScreen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #87CEEB;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      display: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #87CEEB;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+
+    /* Стили для изображения на экране победы */
+    #winImage {
+      max-width: 80%;  /* Ограничиваем максимальную ширину */
+      height: auto;     /* Высота подстраивается автоматически */
+      display: block;   /* Убираем лишние отступы снизу */
+      margin: 20px auto; /* Центрируем изображение */
     }
+}
 
     button {
       padding: 10px 20px;
@@ -63,8 +71,7 @@
   </div>
 
   <div id="winScreen">
-    <h1>Вы победили!</h1>
-    <h2>Рори доволен :)</h2>
+    <img id="winImage" src="./assets/final.png" alt="Победа!"> 
     <button id="restartGameWin">Начать сначала</button>
   </div>
 
