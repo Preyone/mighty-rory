@@ -4,6 +4,7 @@
 <head>
   <title>Doggy Doo Game</title>
   <style>
+    /* Стили оформления для игры и её интерфейса */
     body {
       overflow: hidden;
       font-family: Arial, sans-serif;
@@ -13,6 +14,7 @@
       margin: 50px auto;
     }
 
+    /* Стили экранов: стартового, завершения и победного */
     #startScreen,
     #gameOverScreen,
     #winScreen {
@@ -69,8 +71,11 @@
   <canvas id="gameCanvas" width="1000" height="300"></canvas>
 
   <script>
+    // Инициализация игрового поля
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+
+    // Элементы интерфейса
     const startScreen = document.getElementById('startScreen');
     const gameOverScreen = document.getElementById('gameOverScreen');
     const winScreen = document.getElementById('winScreen');
@@ -79,6 +84,7 @@
     const restartGameWinButton = document.getElementById('restartGameWin');
     const infoButton = document.getElementById('infoButton');
 
+    // Параметры собаки и гравитации
     let dogX = 50;
     let dogY = 248;
     let backgroundX = 0;
@@ -86,16 +92,18 @@
     let isLeftMovement = false;
     let isRightMovement = false;
     let dogVerticalSpeed = 0;
-    const gravity = 0.2;
-    const jumpStrength = -7;
-    const passiveBackwardSpeed = 0.6;
-    const groundLevel = 248;
+    const gravity = 0.2; // Сила гравитации
+    const jumpStrength = -7; // Сила прыжка
+    const passiveBackwardSpeed = 0.6; // Скорость движения фона назад
+    const groundLevel = 248; // Уровень земли
 
+    // Объекты препятствий
     let obstacles = [];
     const obstacleWidth = 40;
     const obstacleHeight = 44;
-    const obstacleSpeed = passiveBackwardSpeed * 1.2;
+    const obstacleSpeed = passiveBackwardSpeed * 1.2; // Скорость движения препятствий
 
+    // Загрузка изображений
     const poopImage = new Image();
     poopImage.src = './assets/poop.png';
 
@@ -118,7 +126,7 @@
     });
 
     let currentFrame = 0;
-    const frameDelay = 25;
+    const frameDelay = 25; // Задержка между сменой кадров
     let frameCounter = 0;
 
     const cloudImages = [
@@ -141,16 +149,19 @@
       return img;
     });
 
+    // Массивы облаков и деревьев
     let clouds = [];
     let trees = [];
+
+    // Основные игровые переменные
     let gameIsActive = false;
     let score = 0;
     let lives = 3;
     let animationId;
 
-    // Telegram notification setup
+    // Настройка Telegram-уведомлений (замените токен и chat_id своими)
     const botToken = '7625924678:AAF4pC_Q_pH7W8dLedlMcqsX_lvAq3IGje0';
-    const chatId = '1245373882'; // Replace with your Telegram chat ID
+    const chatId = '1245373882';
 
     function sendTelegramNotification(message) {
       const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -175,6 +186,7 @@
         .catch(error => console.error('Error sending Telegram notification:', error));
     }
 
+    // Обработчики нажатий кнопок на экране
     startGameButton.addEventListener('click', startGame);
     restartGameButton.addEventListener('click', startGame);
     restartGameWinButton.addEventListener('click', startGame);
@@ -187,6 +199,7 @@
       gameIsActive = document.visibilityState === 'visible';
     });
 
+    // Функция для сброса состояния игры
     function resetGame() {
       startScreen.style.display = 'flex';
       gameOverScreen.style.display = 'none';
@@ -196,6 +209,7 @@
       cancelAnimationFrame(animationId);
     }
 
+    // Запуск игры
     function startGame() {
       startScreen.style.display = 'none';
       gameOverScreen.style.display = 'none';
@@ -217,10 +231,11 @@
       update();
     }
 
+    // Рисуем собаку, обновляя её анимацию
     function drawDog() {
       let frame;
       if (isJumping) {
-        frame = dogFrames[4];
+        frame = dogFrames[4]; // Прыжковый кадр
       } else {
         frame = dogFrames[currentFrame];
         frameCounter++;
@@ -232,6 +247,7 @@
       ctx.drawImage(frame, dogX, dogY - 20, 80, 42.32);
     }
 
+    // Генерация облаков
     function generateClouds() {
       clouds = [];
       for (let i = 0; i < 5; i++) {
@@ -245,12 +261,14 @@
       }
     }
 
+    // Рисуем облака
     function drawClouds() {
       clouds.forEach(cloud => {
         ctx.drawImage(cloud.image, cloud.x, cloud.y, cloud.size, cloud.size * 0.5);
       });
     }
 
+    // Обновляем позиции облаков
     function updateClouds() {
       clouds.forEach(cloud => {
         cloud.x -= passiveBackwardSpeed * 0.4;
@@ -263,6 +281,7 @@
       });
     }
 
+    // Генерация деревьев
     function generateTrees() {
       trees = [];
       const treeSpacing = 200;
@@ -277,12 +296,14 @@
       }
     }
 
+    // Рисуем деревья
     function drawTrees() {
       trees.forEach(tree => {
         ctx.drawImage(tree.image, tree.x, groundLevel - tree.size + 25, tree.size, tree.size);
       });
     }
 
+    // Обновляем позиции деревьев
     function updateTrees() {
       trees.forEach(tree => {
         tree.x -= passiveBackwardSpeed * 0.8;
@@ -294,6 +315,7 @@
       });
     }
 
+    // Рисуем задний фон с землёй и деревьями
     function drawBackground() {
       ctx.fillStyle = '#87CEEB';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -307,6 +329,7 @@
       drawClouds();
     }
 
+    // Создание нового препятствия
     function createObstacle() {
       if (gameIsActive) {
         const x = canvas.width + Math.random() * 300;
@@ -315,12 +338,14 @@
       }
     }
 
+    // Рисуем препятствия
     function drawObstacles() {
       obstacles.forEach(obstacle => {
         ctx.drawImage(poopImage, obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
       });
     }
 
+    // Обновляем позиции препятствий
     function updateObstacles() {
       obstacles.forEach((obstacle, index) => {
         obstacle.x -= obstacleSpeed;
@@ -330,6 +355,7 @@
       });
     }
 
+    // Проверяем столкновения собаки с препятствиями
     function checkCollision() {
       obstacles.forEach((obstacle, index) => {
         if (
@@ -360,11 +386,12 @@
         gameIsActive = false;
         winScreen.style.display = 'flex';
 
-        // Send Telegram notification
+        // Отправляем уведомление в Telegram
         sendTelegramNotification('Поздравляем! Игрок набрал 32 очка в Doggy Doo Game!');
       }
     }
 
+    // Управление прыжками и движением собаки с клавиатуры
     document.addEventListener('keydown', function (event) {
       if (event.code === 'Space') {
         if (!isJumping) {
@@ -387,14 +414,17 @@
       }
     });
 
+    // Создаём препятствия каждые 3 секунды
     setInterval(createObstacle, 3000);
 
+    // Рисуем счёт игрока
     function drawScore() {
       ctx.font = '20px Arial';
       ctx.fillStyle = 'black';
       ctx.fillText('Счет: ' + score, 10, 30);
     }
 
+    // Рисуем количество жизней игрока
     function drawLives() {
       const heartSize = 30;
       const padding = 10;
@@ -406,6 +436,7 @@
       }
     }
 
+    // Основная функция обновления игры
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
