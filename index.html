@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>The Mighty Rory</title>
+  <title>Doggy Doo Game</title>
   <style>
     /* Стили оформления для игры и её интерфейса */
     body {
@@ -42,6 +42,50 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для красоты */
     }
 
+    #infoModal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 80%;
+      max-width: 500px;
+      z-index: 1000;
+      display: none;
+    }
+
+    #infoModal h2 {
+      margin-top: 0;
+    }
+
+    #infoModal button {
+      margin-top: 20px;
+      background-color: #228B22;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #infoModal button:hover {
+      background-color: #1e7e1e;
+    }
+
+    #modalOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      display: none;
+    }
+
     button {
       padding: 10px 20px;
       margin: 10px;
@@ -62,7 +106,7 @@
 <body>
 
   <div id="startScreen">
-    <h1>The Mighty Rory</h1>
+    <h1>Doggy Doo Game</h1>
     <button id="startGame">Начать игру</button>
     <button id="infoButton">Информация</button>
   </div>
@@ -75,13 +119,20 @@
 
   <div id="winScreen">
     <h1>Поздравляем с победой!</h1>
-    <p>Вы успешно прошли игру The Mighty Rory!</p>
+    <p>Вы успешно прошли игру Doggy Doo!</p>
     <img id="winImage" src="./assets/final.png" alt="Победа!">
     <p>Скоро здесь появится больше деталей о вашей победе...</p>
     <button id="restartGameWin">Начать сначала</button>
   </div>
 
   <canvas id="gameCanvas" width="1000" height="300"></canvas>
+
+  <div id="modalOverlay"></div>
+  <div id="infoModal">
+    <h2>О игре</h2>
+    <p>Добро пожаловать в Doggy Doo Game! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой! Соберите очки, избегайте препятствий и постарайтесь добиться победы!</p>
+    <button id="closeInfo">Закрыть</button>
+  </div>
 
   <script>
     // Инициализация игрового поля
@@ -96,6 +147,10 @@
     const restartGameButton = document.getElementById('restartGame');
     const restartGameWinButton = document.getElementById('restartGameWin');
     const infoButton = document.getElementById('infoButton');
+
+    const infoModal = document.getElementById('infoModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeInfoButton = document.getElementById('closeInfo');
 
     // Параметры собаки и гравитации
     let dogX = 50;
@@ -206,7 +261,18 @@
     restartGameWinButton.addEventListener('click', startGame);
 
     infoButton.addEventListener('click', () => {
-      alert('Добро пожаловать в The Mighty Rory! Ваша задача — управлять собакой, прыгать через препятствия и наслаждаться игрой!');
+      infoModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+    });
+
+    closeInfoButton.addEventListener('click', () => {
+      infoModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
+    modalOverlay.addEventListener('click', () => {
+      infoModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
     });
 
     document.addEventListener('visibilitychange', () => {
