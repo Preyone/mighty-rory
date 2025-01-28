@@ -441,14 +441,13 @@
     function createObstacle() {
   if (gameIsActive) {
     const lastObstacle = obstacles[obstacles.length - 1];
-    const newX = canvas.width + 300 + Math.random() * 200;
+    const newX = (lastObstacle ? lastObstacle.x : canvas.width) + 300 + Math.random() * 200;
 
-    if (!lastObstacle || lastObstacle.x - newX > 100) { // Проверяем расстояние
-      const y = groundLevel - obstacleHeight / 2;
-      obstacles.push({ x: newX, y, scored: false });
-    }
+    const y = groundLevel - obstacleHeight / 2;
+    obstacles.push({ x: newX, y, scored: false });
   }
 }
+
 
     // Рисуем препятствия
     function drawObstacles() {
