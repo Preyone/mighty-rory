@@ -440,7 +440,7 @@
     // Создание нового препятствия
     function createObstacle() {
       if (gameIsActive) {
-        const x = canvas.width + Math.random() * 300;
+        const x = canvas.width + 300 + Math.random() * 200;
         const y = groundLevel - obstacleHeight / 2;
         obstacles.push({ x, y, scored: false });
       }
